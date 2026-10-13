@@ -39,7 +39,7 @@ describe('sanitizeInput', () => {
 describe('validateEmail', () => {
   it('accepts valid emails', () => {
     expect(validateEmail('user@example.com')).toBe(true);
-    expect(validateEmail('admin@example.com')).toBe(true);
+    expect(validateEmail('admin@yourdomain.com')).toBe(true);
   });
 
   it('rejects invalid emails', () => {

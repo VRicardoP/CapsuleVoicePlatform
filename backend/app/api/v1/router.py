@@ -119,6 +119,10 @@ api_router.include_router(
     tags=["WhatsApp"],
 )
 
+
+
+
+
 # Permission management (JWT required)
 api_router.include_router(
     permissions.router,
@@ -139,6 +143,8 @@ api_router.include_router(
     prefix="/marketplace",
     tags=["Marketplace"],
 )
+
+
 
 # Voice quota — visibilidad de cuota de voz por tenant (JWT required)
 api_router.include_router(

@@ -66,6 +66,7 @@ class WorkerSettings:
         ),  # Every 5 min
         cron(whatsapp_campaign_scheduler, minute=None),  # Every minute
         cron(sla_check, minute=None),  # Every minute
-        # === Session / token housekeeping ===
+
+    # === Session / token housekeeping ===
         cron(cleanup_expired_sessions, hour={0, 6, 12, 18}, minute=30),  # Every 6h at :30
     ]

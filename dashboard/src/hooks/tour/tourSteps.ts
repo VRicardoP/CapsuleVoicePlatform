@@ -90,6 +90,9 @@ export const dashboardSteps: DriveStep[] = [
 ];
 
 
+
+
+
 // === WHATSAPP ===
 export const whatsappInboxSteps: DriveStep[] = [
   {
@@ -190,6 +193,9 @@ interface TourRoute {
 export const tourRoutes: [string, TourRoute][] = [
   // Dashboard root — includes sidebar intro
   ['/', { steps: dashboardSteps, includeSidebar: true }],
+
+
+
 
 
   // WhatsApp

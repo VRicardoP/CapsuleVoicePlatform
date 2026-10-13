@@ -411,9 +411,9 @@ curl http://localhost:8000/health/security
 | `SMTP_USER` | Usuario SMTP | `usuario@tudominio.com` |
 | `SMTP_PASSWORD` | Contraseña SMTP | `***` |
 | `SMTP_TLS` | Usar TLS | `true` |
-| `SMTP_FROM_EMAIL` | Email remitente | `noreply@tudominio.com` |
-| `SMTP_FROM_NAME` | Nombre remitente | `Dashboard` |
-| `CONTACT_EMAIL` | Email destino contacto | `contact@tudominio.com` |
+| `SMTP_FROM_EMAIL` | Email remitente | `noreply@yourdomain.com` |
+| `SMTP_FROM_NAME` | Nombre remitente | `Sfera AI Dashboard` |
+| `CONTACT_EMAIL` | Email destino contacto | `avisos@yourdomain.com` |
 
 **Nota:** `KMS_MASTER_KEY` y `AUDIT_HMAC_KEY` NO se configuran aquí. Están en `secure_keys` de PostgreSQL.
 

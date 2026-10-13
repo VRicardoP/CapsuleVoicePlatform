@@ -268,8 +268,8 @@ class Settings(BaseSettings):
     smtp_password: str = Field(default="", repr=False)
     smtp_tls: bool = Field(default=True)
     smtp_from_email: str = Field(default="noreply@yourdomain.com")
-    smtp_from_name: str = Field(default="Dashboard")
-    contact_email: str = Field(default="contact@yourdomain.com")
+    smtp_from_name: str = Field(default="Sfera AI Dashboard")
+    contact_email: str = Field(default="avisos@yourdomain.com")
 
 
 @lru_cache

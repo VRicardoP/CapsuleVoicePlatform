@@ -124,3 +124,4 @@ class TestPermissionEnforcementOnModules:
     async def test_dashboard_denied(self, _no_perms_app, client):
         response = await client.get("/api/v1/dashboard")
         assert response.status_code == 403
+

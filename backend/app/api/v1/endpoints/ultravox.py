@@ -719,4 +719,3 @@ async def _resolve_call_id(db: AsyncSession, ultravox_call_id: str):
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
-

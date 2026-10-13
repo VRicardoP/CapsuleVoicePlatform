@@ -241,6 +241,7 @@ async def lifespan(app: FastAPI):
     # See: app/tasks/legacy.py and app/worker.py
     logger.info("Background tasks delegated to ARQ worker")
 
+
     yield
 
     # Shutdown Redis + SSE listener
