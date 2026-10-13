@@ -1,0 +1,114 @@
+{
+  "updatedAt": "2026-06-26T08:48:09.825Z",
+  "createdAt": "2026-02-11T15:32:53.000Z",
+  "id": "b-gVmRsy353u581966Sqp",
+  "name": "getCurrentTime",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "eb4ae384-2419-41a9-9b8e-58f6310ea899",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "52d7c192-2c11-41e2-9d90-2d3e85b7b06e",
+      "name": "Webhook",
+      "webhookId": "eb4ae384-2419-41a9-9b8e-58f6310ea899"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.texto }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        208,
+        0
+      ],
+      "id": "3dcc22fe-6622-483a-b400-27cbdeab0219",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "const DIAS = ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'];\nconst DIASAC = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];\nconst MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];\nconst ahora = new Date();\nconst hoyISO = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Madrid', year:'numeric', month:'2-digit', day:'2-digit' }).format(ahora);\nconst horaMadrid = new Intl.DateTimeFormat('es-ES', { timeZone: 'Europe/Madrid', hour:'2-digit', minute:'2-digit', hour12:false }).format(ahora);\nconst p = hoyISO.split('-').map(Number);\nconst Y = p[0], M = p[1], D = p[2];\nconst dowHoy = new Date(Date.UTC(Y, M-1, D, 12)).getUTCDay();\nlet lineas = [];\nfor (let i = 0; i < 14; i++) {\n  const d = new Date(Date.UTC(Y, M-1, D + i, 12));\n  const dd = String(d.getUTCDate()).padStart(2,'0');\n  const mm = String(d.getUTCMonth()+1).padStart(2,'0');\n  const etq = i === 0 ? ' (hoy)' : (i === 1 ? ' (mañana)' : '');\n  lineas.push('- ' + DIASAC[d.getUTCDay()] + ' ' + dd + '/' + mm + '/' + d.getUTCFullYear() + etq);\n}\nconst texto =\n  'Hoy es ' + DIASAC[dowHoy] + ' ' + D + ' de ' + MESES[M-1] + ' de ' + Y + '. ' +\n  'La hora actual en España (Europe/Madrid) es ' + horaMadrid + '.\\n\\n' +\n  'IMPORTANTE: el año actual es ' + Y + '. Usa SIEMPRE este año y estas fechas exactas. NUNCA asumas otro año ni calcules el día de la semana por tu cuenta: usa esta tabla de los proximos dias para interpretar \"hoy\", \"mañana\", \"el sabado que viene\", etc.\\n' +\n  lineas.join('\\n') + '\\n\\n' +\n  'Considera este valor como el \"ahora\" de la conversacion y usalo para interpretar expresiones temporales.';\nreturn [{ json: { texto } }];"
+      },
+      "id": "construir-fecha-rica-0001",
+      "name": "Construir Fecha",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Construir Fecha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Construir Fecha": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "53bc4c1e-d79b-4e86-803d-8a6abdd627c5",
+  "activeVersionId": "53bc4c1e-d79b-4e86-803d-8a6abdd627c5",
+  "versionCounter": 57,
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-02-11T15:32:53.000Z",
+      "createdAt": "2026-02-11T15:32:53.000Z",
+      "role": "workflow:owner",
+      "workflowId": "b-gVmRsy353u581966Sqp",
+      "projectId": "9IERdek4HuyaGzG6",
+      "project": {
+        "updatedAt": "2025-10-28T17:39:07.767Z",
+        "createdAt": "2025-10-28T17:36:40.145Z",
+        "id": "9IERdek4HuyaGzG6",
+        "name": "sfera ai <mariviceandro@hotmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "6cbf8a63-d32a-4fdf-8f27-781bb1ba826b"
+      }
+    }
+  ]
+}

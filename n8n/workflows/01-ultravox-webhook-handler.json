@@ -1,0 +1,303 @@
+{
+  "name": "SferaAI - Ultravox Webhook Handler",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ultravox-webhook",
+        "responseMode": "onReceived",
+        "responseData": "allEntries"
+      },
+      "id": "b1c2d3e4-1111-1111-1111-111111111111",
+      "name": "Ultravox Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{ $json.event }}",
+        "rules": {
+          "rules": [
+            {
+              "operation": "equal",
+              "value2": "call.started"
+            },
+            {
+              "operation": "equal",
+              "value2": "call.ended"
+            },
+            {
+              "operation": "equal",
+              "value2": "call.joined"
+            },
+            {
+              "operation": "equal",
+              "value2": "call.billed"
+            }
+          ]
+        }
+      },
+      "id": "b1c2d3e4-2222-2222-2222-222222222222",
+      "name": "Switch por Evento",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 1,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "event",
+              "value": "={{ $json.event }}"
+            },
+            {
+              "name": "call_id",
+              "value": "={{ $json.call.call_id }}"
+            },
+            {
+              "name": "from_number",
+              "value": "={{ $json.call.metadata && $json.call.metadata['ultravox.sip.caller_id'] ? $json.call.metadata['ultravox.sip.caller_id'] : ($json.call.from_number || '') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b1c2d3e4-3333-3333-3333-333333333333",
+      "name": "Call Started",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [750, 100]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "event",
+              "value": "={{ $json.event }}"
+            },
+            {
+              "name": "call_id",
+              "value": "={{ $json.call.call_id }}"
+            },
+            {
+              "name": "from_number",
+              "value": "={{ $json.call.metadata && $json.call.metadata['ultravox.sip.caller_id'] ? $json.call.metadata['ultravox.sip.caller_id'] : ($json.call.from_number || '') }}"
+            },
+            {
+              "name": "disconnection_reason",
+              "value": "={{ $json.call.disconnection_reason }}"
+            },
+            {
+              "name": "sentiment",
+              "value": "={{ $json.call.call_analysis ? $json.call.call_analysis.sentiment : 'neutral' }}"
+            },
+            {
+              "name": "call_summary",
+              "value": "={{ $json.call.call_analysis ? $json.call.call_analysis.call_summary : '' }}"
+            }
+          ],
+          "boolean": [
+            {
+              "name": "was_transferred",
+              "value": "={{ $json.call.disconnection_reason === 'call_transfer' }}"
+            }
+          ],
+          "number": [
+            {
+              "name": "duration_seconds",
+              "value": "={{ $json.call.duration_ms ? Math.round($json.call.duration_ms / 1000) : ($json.call.end_timestamp && $json.call.start_timestamp ? Math.round(($json.call.end_timestamp - $json.call.start_timestamp) / 1000) : 0) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b1c2d3e4-4444-4444-4444-444444444444",
+      "name": "Call Ended",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [750, 300]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "event",
+              "value": "={{ $json.event }}"
+            },
+            {
+              "name": "call_id",
+              "value": "={{ $json.call.call_id }}"
+            },
+            {
+              "name": "from_number",
+              "value": "={{ $json.call.metadata && $json.call.metadata['ultravox.sip.caller_id'] ? $json.call.metadata['ultravox.sip.caller_id'] : ($json.call.from_number || '') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b1c2d3e4-5555-5555-5555-555555555555",
+      "name": "Call Joined",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [750, 500]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "event",
+              "value": "={{ $json.event }}"
+            },
+            {
+              "name": "call_id",
+              "value": "={{ $json.call.call_id }}"
+            },
+            {
+              "name": "sentiment",
+              "value": "={{ $json.call.call_analysis ? $json.call.call_analysis.sentiment : 'neutral' }}"
+            },
+            {
+              "name": "call_summary",
+              "value": "={{ $json.call.call_analysis ? $json.call.call_analysis.call_summary : '' }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b1c2d3e4-6666-6666-6666-666666666666",
+      "name": "Call Billed",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [750, 700]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.was_transferred }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "b1c2d3e4-7777-7777-7777-777777777777",
+      "name": "Fue Transferida?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1000, 300]
+    },
+    {
+      "parameters": {
+        "fromEmail": "noreply@yourdomain.com",
+        "toEmail": "admin@tudominio.com",
+        "subject": "ALERTA: Llamada Transferida - {{ $json.from_number }}",
+        "text": "ALERTA DE TRANSFERENCIA DE LLAMADA\n====================================\n\nUna llamada ha sido transferida a un agente humano.\n\nDetalles:\n- ID Llamada: {{ $json.call_id }}\n- Telefono Cliente: {{ $json.from_number }}\n- Duracion antes de transferir: {{ $json.duration_seconds }} segundos\n- Sentimiento detectado: {{ $json.sentiment }}\n\nResumen de la conversacion:\n{{ $json.call_summary }}\n\n------------------------------------\nSferaAI - Sistema de Gestion de Llamadas (Ultravox)",
+        "options": {}
+      },
+      "id": "b1c2d3e4-8888-8888-8888-888888888888",
+      "name": "Email Alerta Transferencia",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 1,
+      "position": [1250, 200]
+    },
+    {
+      "parameters": {
+        "fromEmail": "noreply@yourdomain.com",
+        "toEmail": "admin@tudominio.com",
+        "subject": "Resumen de Llamada - {{ $json.from_number }} ({{ $json.sentiment }})",
+        "text": "RESUMEN DE LLAMADA FINALIZADA\n====================================\n\nDetalles:\n- ID Llamada: {{ $json.call_id }}\n- Telefono Cliente: {{ $json.from_number }}\n- Duracion: {{ $json.duration_seconds }} segundos\n- Motivo de fin: {{ $json.disconnection_reason }}\n- Sentimiento: {{ $json.sentiment }}\n\nResumen:\n{{ $json.call_summary }}\n\n------------------------------------\nSferaAI - Sistema de Gestion de Llamadas (Ultravox)",
+        "options": {}
+      },
+      "id": "b1c2d3e4-9999-9999-9999-999999999999",
+      "name": "Email Resumen Llamada",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 1,
+      "position": [1250, 400]
+    }
+  ],
+  "connections": {
+    "Ultravox Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch por Evento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch por Evento": {
+      "main": [
+        [
+          {
+            "node": "Call Started",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call Ended",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call Joined",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call Billed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Ended": {
+      "main": [
+        [
+          {
+            "node": "Fue Transferida?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fue Transferida?": {
+      "main": [
+        [
+          {
+            "node": "Email Alerta Transferencia",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Email Resumen Llamada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "id": "ultravox-webhook-handler"
+}

@@ -1,0 +1,262 @@
+{
+  "user": {
+    "id": "demo-user-00001",
+    "name": "Usuario Demo",
+    "email": "demo@example.test",
+    "company": "Empresa Ejemplo S.L.",
+    "role": "admin",
+    "preferences": {
+      "visibleModules": [
+        "metrics-overview",
+        "weekly-evolution",
+        "status-distribution",
+        "recent-calls",
+        "performance-metrics",
+        "heatmap"
+      ],
+      "theme": "dark"
+    }
+  },
+  "metrics": {
+    "totalCalls": 18565,
+    "avgDuration": "1m 23s",
+    "totalMinutes": 22856,
+    "successRate": 92,
+    "totalCallsChange": 12.5,
+    "avgDurationChange": -3.2,
+    "totalMinutesChange": 8.7,
+    "successRateChange": 2.1,
+    "periodLabel": "mes actual"
+  },
+  "callsData": [
+    { "date": "Lun", "calls": 45, "resolved": 38, "avgDuration": 125 },
+    { "date": "Mar", "calls": 52, "resolved": 45, "avgDuration": 138 },
+    { "date": "Mié", "calls": 48, "resolved": 42, "avgDuration": 142 },
+    { "date": "Jue", "calls": 61, "resolved": 55, "avgDuration": 131 },
+    { "date": "Vie", "calls": 55, "resolved": 50, "avgDuration": 145 },
+    { "date": "Sáb", "calls": 28, "resolved": 25, "avgDuration": 118 },
+    { "date": "Dom", "calls": 22, "resolved": 20, "avgDuration": 112 }
+  ],
+  "statusData": [
+    { "name": "Agendada", "value": 7240, "color": "#10b981" },
+    { "name": "Finalizado", "value": 3620, "color": "#10b981" },
+    { "name": "Pendiente", "value": 5210, "color": "#f59e0b" },
+    { "name": "Rechazada", "value": 2495, "color": "#ef4444" },
+    { "name": "Voicemail", "value": 420, "color": "#f97316" }
+  ],
+  "recentCalls": [
+    {
+      "id": "demo-call-001",
+      "date": "2025-01-15",
+      "time": "10:30",
+      "duration": "3:45",
+      "caller": "Cliente Demo A",
+      "phone": "+00 000 000 001",
+      "status": "scheduled",
+      "sentiment": "positive",
+      "hasActiveConsent": true,
+      "recordingConsentId": "consent-rec-001"
+    },
+    {
+      "id": "demo-call-002",
+      "date": "2025-01-15",
+      "time": "11:15",
+      "duration": "2:20",
+      "caller": "Cliente Demo B",
+      "phone": "+00 000 000 002",
+      "status": "completed",
+      "sentiment": "neutral",
+      "hasActiveConsent": true,
+      "recordingConsentId": "consent-rec-002"
+    },
+    {
+      "id": "demo-call-003",
+      "date": "2025-01-15",
+      "time": "12:00",
+      "duration": "5:12",
+      "caller": "Cliente Demo C",
+      "phone": "+00 000 000 003",
+      "status": "transferred",
+      "sentiment": "negative",
+      "hasActiveConsent": false,
+      "recordingConsentId": null
+    },
+    {
+      "id": "demo-call-004",
+      "date": "2025-01-15",
+      "time": "14:30",
+      "duration": "1:55",
+      "caller": "Cliente Demo D",
+      "phone": "+00 000 000 004",
+      "status": "completed",
+      "sentiment": "positive",
+      "hasActiveConsent": true,
+      "recordingConsentId": "consent-rec-004"
+    },
+    {
+      "id": "demo-call-005",
+      "date": "2025-01-15",
+      "time": "15:45",
+      "duration": "4:30",
+      "caller": "Cliente Demo E",
+      "phone": "+00 000 000 005",
+      "status": "rejected",
+      "sentiment": "neutral",
+      "hasActiveConsent": false,
+      "recordingConsentId": null
+    }
+  ],
+  "transcriptions": [
+    {
+      "callId": "demo-call-001",
+      "timestamp": "10:30:00",
+      "speaker": "assistant",
+      "text": "Hola, gracias por llamar. Soy Sfera, asistente virtual inteligente. ¿En qué puedo ayudarte hoy?",
+      "hasPii": false,
+      "piiCategories": [],
+      "consentId": "consent-trans-001",
+      "consentStatus": "active"
+    },
+    {
+      "callId": "demo-call-001",
+      "timestamp": "10:30:05",
+      "speaker": "client",
+      "text": "Hola, estoy buscando información sobre sus servicios.",
+      "hasPii": false,
+      "piiCategories": [],
+      "consentId": "consent-trans-001",
+      "consentStatus": "active"
+    },
+    {
+      "callId": "demo-call-001",
+      "timestamp": "10:30:10",
+      "speaker": "assistant",
+      "text": "Perfecto. ¿Podrías indicarme qué tipo de servicio te interesa?",
+      "hasPii": false,
+      "piiCategories": [],
+      "consentId": "consent-trans-001",
+      "consentStatus": "active"
+    },
+    {
+      "callId": "demo-call-001",
+      "timestamp": "10:30:15",
+      "speaker": "client",
+      "text": "Necesito información sobre opciones disponibles en mi área.",
+      "hasPii": false,
+      "piiCategories": [],
+      "consentId": "consent-trans-001",
+      "consentStatus": "active"
+    },
+    {
+      "callId": "demo-call-001",
+      "timestamp": "10:30:20",
+      "speaker": "assistant",
+      "text": "Entendido. Tenemos varias opciones disponibles. ¿Tienes alguna preferencia específica?",
+      "hasPii": false,
+      "piiCategories": [],
+      "consentId": "consent-trans-001",
+      "consentStatus": "active"
+    }
+  ],
+  "actions": [
+    {
+      "id": "action-001",
+      "callId": "demo-call-001",
+      "type": "email",
+      "description": "Envío de información solicitada por email",
+      "status": "success",
+      "timestamp": "10:35:00"
+    },
+    {
+      "id": "action-002",
+      "callId": "demo-call-001",
+      "type": "crm",
+      "description": "Registro en CRM - Lead cualificado",
+      "status": "success",
+      "timestamp": "10:35:02"
+    },
+    {
+      "id": "action-003",
+      "callId": "demo-call-001",
+      "type": "calendar",
+      "description": "Cita agendada para seguimiento",
+      "status": "success",
+      "timestamp": "10:35:05"
+    },
+    {
+      "id": "action-004",
+      "callId": "demo-call-001",
+      "type": "whatsapp",
+      "description": "Notificación WhatsApp enviada",
+      "status": "success",
+      "timestamp": "10:35:08"
+    }
+  ],
+  "performanceData": [
+    { "metric": "Resolución 1ra Llamada", "value": 87, "fullMark": 100 },
+    { "metric": "Satisfacción", "value": 92, "fullMark": 100 },
+    { "metric": "Tiempo Respuesta", "value": 95, "fullMark": 100 },
+    { "metric": "Precisión IA", "value": 89, "fullMark": 100 },
+    { "metric": "Conversión", "value": 78, "fullMark": 100 }
+  ],
+  "heatmapData": [
+    { "hour": "00:00", "Mon": 2, "Tue": 1, "Wed": 3, "Thu": 2, "Fri": 4, "Sat": 1, "Sun": 0 },
+    { "hour": "03:00", "Mon": 0, "Tue": 1, "Wed": 0, "Thu": 1, "Fri": 2, "Sat": 3, "Sun": 1 },
+    { "hour": "06:00", "Mon": 3, "Tue": 4, "Wed": 5, "Thu": 3, "Fri": 6, "Sat": 8, "Sun": 5 },
+    { "hour": "09:00", "Mon": 15, "Tue": 18, "Wed": 20, "Thu": 22, "Fri": 19, "Sat": 12, "Sun": 8 },
+    { "hour": "12:00", "Mon": 28, "Tue": 32, "Wed": 30, "Thu": 35, "Fri": 33, "Sat": 20, "Sun": 15 },
+    { "hour": "15:00", "Mon": 25, "Tue": 28, "Wed": 26, "Thu": 30, "Fri": 27, "Sat": 18, "Sun": 12 },
+    { "hour": "18:00", "Mon": 20, "Tue": 22, "Wed": 24, "Thu": 26, "Fri": 28, "Sat": 15, "Sun": 10 },
+    { "hour": "21:00", "Mon": 8, "Tue": 10, "Wed": 9, "Thu": 12, "Fri": 15, "Sat": 10, "Sun": 6 }
+  ],
+  "conversionData": [
+    { "month": "Ene", "llamadas": 420, "conversiones": 89, "tasa": 21.2 },
+    { "month": "Feb", "llamadas": 380, "conversiones": 95, "tasa": 25.0 },
+    { "month": "Mar", "llamadas": 510, "conversiones": 127, "tasa": 24.9 },
+    { "month": "Abr", "llamadas": 450, "conversiones": 112, "tasa": 24.9 },
+    { "month": "May", "llamadas": 490, "conversiones": 135, "tasa": 27.6 },
+    { "month": "Jun", "llamadas": 520, "conversiones": 145, "tasa": 27.9 }
+  ],
+  "campaigns": [
+    {
+      "name": "Campaña Demo Norte",
+      "date": "13 Ene 2025 (11:12)",
+      "minutes": 4560,
+      "status": "Completado",
+      "agendada": "1,820 (40%)",
+      "interesado": "900 (20%)",
+      "pendiente": "1,230 (27%)",
+      "rechazada": "610 (13%)"
+    },
+    {
+      "name": "Campaña Demo Centro",
+      "date": "13 Ene 2025 (10:34)",
+      "minutes": 3920,
+      "status": "Completado",
+      "agendada": "1,540 (39%)",
+      "interesado": "780 (20%)",
+      "pendiente": "1,000 (25%)",
+      "rechazada": "600 (15%)"
+    },
+    {
+      "name": "Campaña Demo Sur",
+      "date": "13 Ene 2025 (10:30)",
+      "minutes": 4120,
+      "status": "Completado",
+      "agendada": "78 (3%)",
+      "interesado": "39 (1%)",
+      "pendiente": "82 (2%)",
+      "rechazada": "78 (3%)"
+    },
+    {
+      "name": "Campaña Demo Este",
+      "date": "13 Ene 2025 (09:55)",
+      "minutes": 3070,
+      "status": "Completado",
+      "agendada": "78 (3%)",
+      "interesado": "39 (1%)",
+      "pendiente": "82 (2%)",
+      "rechazada": "78 (3%)"
+    }
+  ]
+}

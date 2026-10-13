@@ -1,0 +1,211 @@
+# =============================================================================
+# SferaAI - Docker Compose
+# =============================================================================
+# Five containers: PostgreSQL, Redis, Backend (FastAPI), Worker (ARQ),
+#                  Frontend (React + Nginx)
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # PostgreSQL Database
+  # ---------------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: sferaai-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Database password required}
+      POSTGRES_DB: ${POSTGRES_DB:-sfera}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sferaai.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    networks:
+      - sferaai-network
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "1.0"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-sfera}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ---------------------------------------------------------------------------
+  # Redis (broker for ARQ worker + SSE pub/sub)
+  # ---------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: sferaai-redis
+    restart: unless-stopped
+    command: ["redis-server", "--maxmemory", "128mb", "--maxmemory-policy", "allkeys-lru"]
+    volumes:
+      - redis_data:/data
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    networks:
+      - sferaai-network
+    deploy:
+      resources:
+        limits:
+          memory: 192M
+          cpus: "0.5"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ---------------------------------------------------------------------------
+  # Backend API (FastAPI)
+  # ---------------------------------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sferaai-backend
+    restart: unless-stopped
+    environment:
+      - ENVIRONMENT=${ENVIRONMENT:-development}
+      - DEBUG=${DEBUG:-false}
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?Database password required}
+      - POSTGRES_DB=${POSTGRES_DB:-sfera}
+      - SECRET_KEY=${SECRET_KEY:?Secret key required}
+      - KMS_MASTER_KEY=${KMS_MASTER_KEY:?KMS master key required}
+      - AUDIT_HMAC_KEY=${AUDIT_HMAC_KEY:?Audit HMAC key required}
+      - API_KEY_PROVISION_SECRET=${API_KEY_PROVISION_SECRET:-}
+      - CORS_ORIGINS=["http://localhost","http://localhost:80","http://frontend"]
+      - ULTRAVOX_API_KEY=${ULTRAVOX_API_KEY:-}
+      - ULTRAVOX_WEBHOOK_FORWARD_URL=${ULTRAVOX_WEBHOOK_FORWARD_URL:-}
+      - ULTRAVOX_WEBHOOK_SECRET=${ULTRAVOX_WEBHOOK_SECRET:-}
+      - ZADARMA_API_KEY=${ZADARMA_API_KEY:-}
+      - ZADARMA_API_SECRET=${ZADARMA_API_SECRET:-}
+      - RECORDING_ENABLED=${RECORDING_ENABLED:-true}
+      - RECORDING_ENCRYPTION_KEY=${RECORDING_ENCRYPTION_KEY:-}
+      - RECORDING_CLIENT_ID=${RECORDING_CLIENT_ID:-default}
+      - RECORDING_RETENTION_DAYS=${RECORDING_RETENTION_DAYS:-3}
+      - RECORDINGS_BASE_PATH=/opt/sferaai/data/recordings
+      - WHATSAPP_WEBHOOK_VERIFY_TOKEN=${WHATSAPP_WEBHOOK_VERIFY_TOKEN:-}
+      - WHATSAPP_APP_SECRET=${WHATSAPP_APP_SECRET:-}
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./data/recordings:/opt/sferaai/data/recordings
+      - ./infraestructura/shared/marketplace.json:/opt/sferaai/marketplace.json:ro
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    networks:
+      - sferaai-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: "2.0"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; httpx.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # ---------------------------------------------------------------------------
+  # ARQ Worker (background job processing)
+  # ---------------------------------------------------------------------------
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sferaai-worker
+    restart: unless-stopped
+    command: ["python", "-m", "arq", "app.worker.WorkerSettings"]
+    environment:
+      - ENVIRONMENT=${ENVIRONMENT:-development}
+      - DEBUG=${DEBUG:-false}
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?Database password required}
+      - POSTGRES_DB=${POSTGRES_DB:-sfera}
+      - SECRET_KEY=${SECRET_KEY:?Secret key required}
+      - KMS_MASTER_KEY=${KMS_MASTER_KEY:?KMS master key required}
+      - AUDIT_HMAC_KEY=${AUDIT_HMAC_KEY:?Audit HMAC key required}
+      - REDIS_URL=redis://redis:6379
+      - ULTRAVOX_API_KEY=${ULTRAVOX_API_KEY:-}
+      - ZADARMA_API_KEY=${ZADARMA_API_KEY:-}
+      - ZADARMA_API_SECRET=${ZADARMA_API_SECRET:-}
+      - RECORDING_ENABLED=${RECORDING_ENABLED:-true}
+      - RECORDING_ENCRYPTION_KEY=${RECORDING_ENCRYPTION_KEY:-}
+      - RECORDING_CLIENT_ID=${RECORDING_CLIENT_ID:-default}
+      - RECORDINGS_BASE_PATH=/opt/sferaai/data/recordings
+    volumes:
+      - ./data/recordings:/opt/sferaai/data/recordings
+    networks:
+      - sferaai-network
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "1.0"
+
+  # ---------------------------------------------------------------------------
+  # Frontend (React + Nginx)
+  # ---------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=${VITE_API_URL:-http://localhost:8000}
+    container_name: sferaai-frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-80}:80"
+    networks:
+      - sferaai-network
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: "0.5"
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+# -----------------------------------------------------------------------------
+# Networks
+# -----------------------------------------------------------------------------
+networks:
+  sferaai-network:
+    driver: bridge
+    name: sferaai-network
+
+# -----------------------------------------------------------------------------
+# Volumes
+# -----------------------------------------------------------------------------
+volumes:
+  postgres_data:
+    name: sferaai-postgres-data
+  redis_data:
+    name: sferaai-redis-data

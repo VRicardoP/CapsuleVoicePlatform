@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #0a0a0f;
+}
+
+/* Driver.js Tour - Tema oscuro */
+.driver-popover.sfera-tour-popover {
+  background: #1f2937 !important;
+  color: #f9fafb !important;
+  border: 1px solid #374151 !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+}
+
+.driver-popover.sfera-tour-popover .driver-popover-title {
+  color: #f9fafb !important;
+  font-size: 1.125rem !important;
+  font-weight: 600 !important;
+}
+
+.driver-popover.sfera-tour-popover .driver-popover-description {
+  color: #9ca3af !important;
+  font-size: 0.875rem !important;
+  line-height: 1.5 !important;
+}
+
+.driver-popover.sfera-tour-popover .driver-popover-progress-text {
+  color: #6b7280 !important;
+  font-size: 0.75rem !important;
+}
+
+.driver-popover.sfera-tour-popover .driver-popover-navigation-btns button {
+  border-radius: 0.5rem !important;
+  padding: 0.5rem 1rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  transition: all 0.15s ease !important;
+}
+
+.driver-popover.sfera-tour-popover .driver-popover-next-btn,
+.driver-popover.sfera-tour-popover .driver-popover-done-btn {
+  background: #3b82f6 !important;
+  color: white !important;
+  border: none !important;
+}
+
+.driver-popover.sfera-tour-popover .driver-popover-next-btn:hover,
+.driver-popover.sfera-tour-popover .driver-popover-done-btn:hover {
+  background: #2563eb !important;
+}
+
+.driver-popover.sfera-tour-popover .driver-popover-prev-btn {
+  background: #374151 !important;
+  color: #d1d5db !important;
+  border: none !important;
+}
+
+.driver-popover.sfera-tour-popover .driver-popover-prev-btn:hover {
+  background: #4b5563 !important;
+}
+
+.driver-popover.sfera-tour-popover .driver-popover-close-btn {
+  color: #9ca3af !important;
+}
+
+.driver-popover.sfera-tour-popover .driver-popover-close-btn:hover {
+  color: #f9fafb !important;
+}
+
+.driver-popover.sfera-tour-popover .driver-popover-arrow-side-left.driver-popover-arrow,
+.driver-popover.sfera-tour-popover .driver-popover-arrow-side-right.driver-popover-arrow,
+.driver-popover.sfera-tour-popover .driver-popover-arrow-side-top.driver-popover-arrow,
+.driver-popover.sfera-tour-popover .driver-popover-arrow-side-bottom.driver-popover-arrow {
+  border-color: #1f2937 !important;
+}

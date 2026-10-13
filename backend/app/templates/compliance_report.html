@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Informe de Cumplimiento RGPD - SferaAI</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+            @bottom-center {
+                content: "Pagina " counter(page) " de " counter(pages);
+                font-size: 10px;
+                color: #666;
+            }
+        }
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            font-size: 11pt;
+            line-height: 1.5;
+            color: #1f2937;
+        }
+        .header {
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .logo-text {
+            font-size: 28pt;
+            font-weight: bold;
+            color: #3b82f6;
+            margin-bottom: 10px;
+        }
+        h1 { color: #1e40af; font-size: 24pt; margin-top: 10px; }
+        h2 { color: #3b82f6; font-size: 16pt; border-bottom: 1px solid #e5e7eb; padding-bottom: 8px; margin-top: 30px; }
+        h3 { color: #1f2937; font-size: 13pt; }
+        .metadata {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .metadata-item { display: flex; margin-bottom: 5px; }
+        .metadata-label { font-weight: bold; width: 200px; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #d1d5db;
+            padding: 10px;
+            text-align: left;
+        }
+        th { background: #3b82f6; color: white; }
+        tr:nth-child(even) { background: #f9fafb; }
+        .status-ok { color: #059669; font-weight: bold; }
+        .status-warning { color: #d97706; font-weight: bold; }
+        .status-error { color: #dc2626; font-weight: bold; }
+        .integrity-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .integrity-verified { background: #d1fae5; color: #065f46; }
+        .integrity-failed { background: #fee2e2; color: #991b1b; }
+        .signature-box {
+            border: 2px solid #3b82f6;
+            padding: 20px;
+            margin-top: 40px;
+            background: #eff6ff;
+        }
+        .hash { font-family: monospace; font-size: 9pt; word-break: break-all; }
+        .score-gauge {
+            text-align: center;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .score-value {
+            font-size: 48pt;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+        .score-label {
+            font-size: 14pt;
+            color: #6b7280;
+        }
+        .alert-box {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .alert-info { background: #dbeafe; border-left: 4px solid #3b82f6; }
+        .alert-warning { background: #fef3c7; border-left: 4px solid #f59e0b; }
+        .alert-success { background: #d1fae5; border-left: 4px solid #10b981; }
+        .legal-reference {
+            font-size: 9pt;
+            color: #6b7280;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-text">SferaAI</div>
+        <h1>Informe de Cumplimiento Normativo</h1>
+        <p>Generado para presentacion ante la Agencia Espanola de Proteccion de Datos (AEPD)</p>
+    </div>
+
+    <div class="metadata">
+        <div class="metadata-item">
+            <span class="metadata-label">Fecha de generacion:</span>
+            <span>{{ generated_at }}</span>
+        </div>
+        <div class="metadata-item">
+            <span class="metadata-label">Periodo del informe:</span>
+            <span>{{ period_start }} - {{ period_end }}</span>
+        </div>
+        <div class="metadata-item">
+            <span class="metadata-label">Organizacion:</span>
+            <span>{{ organization_name }}</span>
+        </div>
+        <div class="metadata-item">
+            <span class="metadata-label">Generado por:</span>
+            <span>{{ generated_by }} ({{ user_role }})</span>
+        </div>
+        <div class="metadata-item">
+            <span class="metadata-label">ID del informe:</span>
+            <span class="hash">{{ report_id }}</span>
+        </div>
+    </div>
+
+    <!-- SECCION 1: RESUMEN EJECUTIVO -->
+    <h2>1. Resumen Ejecutivo</h2>
+
+    <div class="score-gauge">
+        <div class="score-value">{{ compliance_score }}%</div>
+        <div class="score-label">Puntuacion Global de Cumplimiento RGPD</div>
+    </div>
+
+    <table>
+        <tr>
+            <th>Metrica</th>
+            <th>Valor</th>
+            <th>Estado</th>
+        </tr>
+        <tr>
+            <td>Puntuacion de Cumplimiento RGPD</td>
+            <td>{{ compliance_score }}%</td>
+            <td class="{% if compliance_score >= 80 %}status-ok{% elif compliance_score >= 60 %}status-warning{% else %}status-error{% endif %}">
+                {% if compliance_score >= 80 %}CONFORME{% elif compliance_score >= 60 %}REQUIERE ATENCION{% else %}NO CONFORME{% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>Tasa de Consentimientos Activos</td>
+            <td>{{ consent_rate }}%</td>
+            <td class="{% if consent_rate >= 70 %}status-ok{% else %}status-warning{% endif %}">
+                {% if consent_rate >= 70 %}ADECUADO{% else %}MEJORABLE{% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>Solicitudes ARCO Atendidas a Tiempo</td>
+            <td>{{ requests_on_time }} / {{ requests_total }}</td>
+            <td class="{% if requests_total == 0 %}status-ok{% elif requests_compliance >= 100 %}status-ok{% else %}status-error{% endif %}">
+                {% if requests_total == 0 %}SIN SOLICITUDES{% elif requests_compliance >= 100 %}CONFORME{% else %}INCUMPLIMIENTO{% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>Brechas de Seguridad Notificadas</td>
+            <td>{{ breaches_notified }} / {{ breaches_total }}</td>
+            <td class="{% if breaches_total == 0 or breaches_notified == breaches_total %}status-ok{% else %}status-error{% endif %}">
+                {% if breaches_total == 0 %}SIN INCIDENCIAS{% elif breaches_notified == breaches_total %}CONFORME{% else %}PENDIENTE{% endif %}
+            </td>
+        </tr>
+    </table>
+
+    <!-- SECCION 2: INTEGRIDAD DEL AUDIT LOG -->
+    <h2>2. Integridad del Registro de Auditoria (Art. 30 RGPD)</h2>
+    <p class="legal-reference">Reglamento (UE) 2016/679 - Articulo 30: Registro de las actividades de tratamiento</p>
+
+    <p>
+        <span class="integrity-badge {% if audit_integrity.status == 'INTEGRITY_VERIFIED' %}integrity-verified{% else %}integrity-failed{% endif %}">
+            {{ audit_integrity.status }}
+        </span>
+    </p>
+    <table>
+        <tr>
+            <td>Total de registros</td>
+            <td>{{ audit_integrity.total_records }}</td>
+        </tr>
+        <tr>
+            <td>Registros validos</td>
+            <td>{{ audit_integrity.valid_records }}</td>
+        </tr>
+        <tr>
+            <td>Porcentaje de integridad</td>
+            <td>{{ audit_integrity.integrity_percentage }}%</td>
+        </tr>
+        <tr>
+            <td>Verificacion realizada</td>
+            <td>{{ audit_integrity.verification_timestamp }}</td>
+        </tr>
+    </table>
+
+    {% if audit_integrity.status == 'INTEGRITY_VERIFIED' %}
+    <div class="alert-box alert-success">
+        <strong>Verificacion Exitosa:</strong> La cadena de hash del registro de auditoria esta intacta.
+        No se han detectado modificaciones no autorizadas en los registros.
+    </div>
+    {% else %}
+    <div class="alert-box alert-warning">
+        <strong>Atencion:</strong> Se han detectado inconsistencias en la cadena de hash del registro de auditoria.
+        Se recomienda una revision detallada de los registros afectados.
+    </div>
+    {% endif %}
+
+    <!-- SECCION 3: CONSENTIMIENTOS -->
+    <h2>3. Gestion de Consentimientos (Art. 7 RGPD)</h2>
+    <p class="legal-reference">Reglamento (UE) 2016/679 - Articulo 7: Condiciones para el consentimiento</p>
+
+    {% if consents_by_purpose %}
+    <table>
+        <tr>
+            <th>Proposito</th>
+            <th>Activos</th>
+            <th>Revocados</th>
+            <th>Expirados</th>
+            <th>Tasa</th>
+        </tr>
+        {% for consent in consents_by_purpose %}
+        <tr>
+            <td>{{ consent.purpose_name }}</td>
+            <td>{{ consent.active }}</td>
+            <td>{{ consent.revoked }}</td>
+            <td>{{ consent.expired }}</td>
+            <td>{{ consent.rate }}%</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <div class="alert-box alert-info">
+        No hay datos de consentimientos registrados en el periodo seleccionado.
+    </div>
+    {% endif %}
+
+    <!-- SECCION 4: SOLICITUDES ARCO -->
+    <h2>4. Derechos de los Interesados (Art. 15-22 RGPD)</h2>
+    <p class="legal-reference">Derechos ARCO: Acceso (Art. 15), Rectificacion (Art. 16), Supresion (Art. 17), Limitacion (Art. 18), Portabilidad (Art. 20), Oposicion (Art. 21)</p>
+
+    {% if requests_summary %}
+    <table>
+        <tr>
+            <th>Tipo</th>
+            <th>Recibidas</th>
+            <th>Completadas</th>
+            <th>Pendientes</th>
+            <th>Fuera de plazo</th>
+        </tr>
+        {% for req in requests_summary %}
+        <tr>
+            <td>{{ req.type_label }}</td>
+            <td>{{ req.received }}</td>
+            <td>{{ req.completed }}</td>
+            <td>{{ req.pending }}</td>
+            <td class="{% if req.overdue > 0 %}status-error{% endif %}">{{ req.overdue }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <div class="alert-box alert-info">
+        No se han recibido solicitudes de derechos ARCO en el periodo seleccionado.
+    </div>
+    {% endif %}
+
+    <div class="alert-box alert-info">
+        <strong>Plazo legal de respuesta:</strong> 1 mes desde la recepcion de la solicitud (Art. 12.3 RGPD),
+        ampliable hasta 2 meses en casos de complejidad.
+    </div>
+
+    <!-- SECCION 5: DECISIONES IA -->
+    <h2>5. Trazabilidad de IA (Art. 12 AI Act)</h2>
+    <p class="legal-reference">Reglamento de Inteligencia Artificial (UE) 2024/1689 - Articulo 12: Mantenimiento de registros</p>
+
+    <table>
+        <tr>
+            <th>Metrica</th>
+            <th>Valor</th>
+        </tr>
+        <tr>
+            <td>Total decisiones registradas</td>
+            <td>{{ ai_decisions.total }}</td>
+        </tr>
+        <tr>
+            <td>Decisiones con supervision humana</td>
+            <td>{{ ai_decisions.human_reviewed }}</td>
+        </tr>
+        <tr>
+            <td>Overrides humanos</td>
+            <td>{{ ai_decisions.human_overrides }}</td>
+        </tr>
+        <tr>
+            <td>Confianza promedio</td>
+            <td>{{ ai_decisions.avg_confidence }}%</td>
+        </tr>
+        <tr>
+            <td>AI Disclosure registrado</td>
+            <td>{{ ai_decisions.disclosures_compliant }}%</td>
+        </tr>
+    </table>
+
+    {% if ai_decisions.total > 0 %}
+    <div class="alert-box alert-info">
+        <strong>Art. 14 AI Act - Supervision humana:</strong> El sistema mantiene registros de todas las decisiones
+        automatizadas y permite la revision humana cuando es necesario.
+    </div>
+    {% endif %}
+
+    <!-- SECCION 6: RETENCION DE DATOS -->
+    <h2>6. Retencion y Eliminacion de Datos (Art. 5.1.e RGPD)</h2>
+    <p class="legal-reference">Principio de limitacion del plazo de conservacion - LOPDGDD Art. 33: Bloqueo de datos</p>
+
+    <table>
+        <tr>
+            <th>Categoria</th>
+            <th>Periodo</th>
+            <th>Base Legal</th>
+            <th>Registros</th>
+        </tr>
+        <tr>
+            <td>Datos de trafico</td>
+            <td>12 meses</td>
+            <td>LGT Art. 68</td>
+            <td>{{ retention.traffic_data }}</td>
+        </tr>
+        <tr>
+            <td>Datos bloqueados (LOPDGDD Art. 33)</td>
+            <td>Segun obligacion</td>
+            <td>LOPDGDD Art. 33</td>
+            <td>{{ retention.blocked_data }}</td>
+        </tr>
+        <tr>
+            <td>Audit log</td>
+            <td>Indefinido</td>
+            <td>Art. 30 RGPD</td>
+            <td>{{ retention.audit_records }}</td>
+        </tr>
+    </table>
+
+    <!-- SECCION 7: BRECHAS DE SEGURIDAD -->
+    <h2>7. Notificacion de Brechas (Art. 33-34 RGPD)</h2>
+    <p class="legal-reference">Articulo 33: Notificacion a la autoridad de control (72 horas). Articulo 34: Comunicacion al interesado.</p>
+
+    {% if breaches_total > 0 %}
+    <table>
+        <tr>
+            <th>Metrica</th>
+            <th>Valor</th>
+        </tr>
+        <tr>
+            <td>Total brechas detectadas</td>
+            <td>{{ breaches_total }}</td>
+        </tr>
+        <tr>
+            <td>Notificadas a la AEPD</td>
+            <td>{{ breaches_notified }}</td>
+        </tr>
+        <tr>
+            <td>Pendientes de notificacion</td>
+            <td>{{ breaches_total - breaches_notified }}</td>
+        </tr>
+    </table>
+    {% else %}
+    <div class="alert-box alert-success">
+        <strong>Sin incidencias:</strong> No se han detectado brechas de seguridad en el periodo analizado.
+    </div>
+    {% endif %}
+
+    <!-- FIRMA DIGITAL -->
+    <div class="signature-box">
+        <h3>Firma Digital del Informe</h3>
+        <p><strong>Hash SHA-256 del contenido:</strong></p>
+        <p class="hash">{{ report_hash }}</p>
+        <p><strong>Timestamp:</strong> {{ generated_at_iso }}</p>
+        <p><strong>Generado por sistema:</strong> SferaAI v{{ version }}</p>
+        <p style="margin-top: 15px; font-size: 10pt; color: #6b7280;">
+            Este informe ha sido generado automaticamente por el sistema SferaAI.
+            La integridad del documento puede verificarse mediante el hash SHA-256 indicado.
+        </p>
+    </div>
+
+    <!-- PIE DE PAGINA LEGAL -->
+    <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; font-size: 9pt; color: #6b7280;">
+        <p><strong>Marco Legal Aplicable:</strong></p>
+        <ul>
+            <li>Reglamento (UE) 2016/679 - Reglamento General de Proteccion de Datos (RGPD)</li>
+            <li>Ley Organica 3/2018 - Proteccion de Datos Personales y garantia de los derechos digitales (LOPDGDD)</li>
+            <li>Reglamento (UE) 2024/1689 - Reglamento de Inteligencia Artificial (AI Act)</li>
+            <li>Ley 9/2014 - General de Telecomunicaciones (LGT)</li>
+        </ul>
+        <p style="margin-top: 10px;">
+            <strong>Responsable del Tratamiento:</strong> {{ organization_name }}<br>
+            <strong>Contacto DPO:</strong> dpo@sferaai.example.com
+        </p>
+    </div>
+</body>
+</html>

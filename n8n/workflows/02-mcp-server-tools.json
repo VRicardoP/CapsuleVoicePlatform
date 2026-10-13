@@ -1,0 +1,192 @@
+{
+  "name": "MCP Server - SferaAI Tools",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "bearerAuth",
+        "path": "sferaai-mcp-tools"
+      },
+      "id": "mcp-trigger-001",
+      "name": "MCP Server Trigger",
+      "type": "n8n-nodes-base.mcpTrigger",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "BEARER_CREDENTIAL_ID",
+          "name": "MCP Bearer Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Obtiene la hora actual en Madrid - util para saber la fecha y hora del sistema",
+        "method": "GET",
+        "url": "http://worldtimeapi.org/api/timezone/Europe/Madrid"
+      },
+      "id": "tool-time-001",
+      "name": "Hora Actual",
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 1.1,
+      "position": [500, 100]
+    },
+    {
+      "parameters": {
+        "toolDescription": "Obtiene las 10 llamadas mas recientes con su estado, duracion y sentimiento. Usa esto para ver la actividad reciente del call center.",
+        "operation": "executeQuery",
+        "query": "SELECT id, direction, status, caller_number, called_number, duration_seconds, sentiment, initiated_at, ended_at FROM calls WHERE deleted_at IS NULL ORDER BY initiated_at DESC LIMIT 10",
+        "options": {}
+      },
+      "id": "tool-calls-recent-001",
+      "name": "Llamadas Recientes",
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 1,
+      "position": [500, 250],
+      "credentials": {
+        "postgres": {
+          "id": "POSTGRES_CREDENTIAL_ID",
+          "name": "SferaAI Postgres"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Obtiene estadisticas generales de llamadas: total de llamadas, duracion promedio, tasa de exito, llamadas por estado. Usa esto para reportes y metricas.",
+        "operation": "executeQuery",
+        "query": "SELECT COUNT(*) as total_llamadas, ROUND(AVG(duration_seconds)::numeric, 1) as duracion_promedio_segundos, COUNT(CASE WHEN status = 'completed' THEN 1 END) as completadas, COUNT(CASE WHEN status = 'transferred' THEN 1 END) as transferidas, COUNT(CASE WHEN status = 'in_progress' THEN 1 END) as en_curso, COUNT(CASE WHEN sentiment = 'positive' THEN 1 END) as sentimiento_positivo, COUNT(CASE WHEN sentiment = 'negative' THEN 1 END) as sentimiento_negativo, COUNT(CASE WHEN sentiment = 'neutral' THEN 1 END) as sentimiento_neutral FROM calls WHERE deleted_at IS NULL AND initiated_at >= CURRENT_DATE - INTERVAL '30 days'",
+        "options": {}
+      },
+      "id": "tool-stats-001",
+      "name": "Estadisticas Llamadas",
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 1,
+      "position": [500, 400],
+      "credentials": {
+        "postgres": {
+          "id": "POSTGRES_CREDENTIAL_ID",
+          "name": "SferaAI Postgres"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Obtiene las llamadas de hoy. Usa esto para ver la actividad del dia actual.",
+        "operation": "executeQuery",
+        "query": "SELECT id, direction, status, caller_number, called_number, duration_seconds, sentiment, initiated_at FROM calls WHERE deleted_at IS NULL AND DATE(initiated_at) = CURRENT_DATE ORDER BY initiated_at DESC",
+        "options": {}
+      },
+      "id": "tool-calls-today-001",
+      "name": "Llamadas Hoy",
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 1,
+      "position": [500, 550],
+      "credentials": {
+        "postgres": {
+          "id": "POSTGRES_CREDENTIAL_ID",
+          "name": "SferaAI Postgres"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Busca llamadas con sentimiento negativo de los ultimos 7 dias. Util para identificar clientes insatisfechos que requieren atencion.",
+        "operation": "executeQuery",
+        "query": "SELECT id, caller_number, duration_seconds, sentiment, initiated_at, status FROM calls WHERE deleted_at IS NULL AND sentiment = 'negative' AND initiated_at >= CURRENT_DATE - INTERVAL '7 days' ORDER BY initiated_at DESC LIMIT 20",
+        "options": {}
+      },
+      "id": "tool-calls-negative-001",
+      "name": "Llamadas Negativas",
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 1,
+      "position": [500, 700],
+      "credentials": {
+        "postgres": {
+          "id": "POSTGRES_CREDENTIAL_ID",
+          "name": "SferaAI Postgres"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Obtiene las llamadas que fueron transferidas a un agente humano. Util para analizar casos que la IA no pudo resolver.",
+        "operation": "executeQuery",
+        "query": "SELECT id, caller_number, duration_seconds, sentiment, initiated_at, transfer_reason FROM calls WHERE deleted_at IS NULL AND status = 'transferred' AND initiated_at >= CURRENT_DATE - INTERVAL '30 days' ORDER BY initiated_at DESC LIMIT 20",
+        "options": {}
+      },
+      "id": "tool-calls-transferred-001",
+      "name": "Llamadas Transferidas",
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 1,
+      "position": [700, 100],
+      "credentials": {
+        "postgres": {
+          "id": "POSTGRES_CREDENTIAL_ID",
+          "name": "SferaAI Postgres"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Cuenta el numero de contactos registrados en el sistema.",
+        "operation": "executeQuery",
+        "query": "SELECT COUNT(*) as total_contactos, COUNT(CASE WHEN marketing_opt_out = false THEN 1 END) as aceptan_marketing, COUNT(CASE WHEN marketing_opt_out = true THEN 1 END) as rechazan_marketing FROM contacts WHERE deleted_at IS NULL",
+        "options": {}
+      },
+      "id": "tool-contacts-count-001",
+      "name": "Contar Contactos",
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 1,
+      "position": [700, 250],
+      "credentials": {
+        "postgres": {
+          "id": "POSTGRES_CREDENTIAL_ID",
+          "name": "SferaAI Postgres"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Envia un email. Requiere: destinatario (to), asunto (subject) y cuerpo del mensaje (text). Usa esto para notificaciones o comunicaciones.",
+        "fromEmail": "demo@yourdomain.com",
+        "toEmail": "={{ $fromAI('to', 'Email del destinatario', 'string') }}",
+        "subject": "={{ $fromAI('subject', 'Asunto del email', 'string') }}",
+        "text": "={{ $fromAI('text', 'Cuerpo del mensaje en texto plano', 'string') }}"
+      },
+      "id": "tool-email-001",
+      "name": "Enviar Email",
+      "type": "n8n-nodes-base.emailSendTool",
+      "typeVersion": 1,
+      "position": [700, 400],
+      "credentials": {
+        "smtp": {
+          "id": "SMTP_CREDENTIAL_ID",
+          "name": "IONOS SMTP"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "MCP Server Trigger": {
+      "ai_tool": [
+        [
+          { "node": "Hora Actual", "type": "ai_tool", "index": 0 },
+          { "node": "Llamadas Recientes", "type": "ai_tool", "index": 0 },
+          { "node": "Estadisticas Llamadas", "type": "ai_tool", "index": 0 },
+          { "node": "Llamadas Hoy", "type": "ai_tool", "index": 0 },
+          { "node": "Llamadas Negativas", "type": "ai_tool", "index": 0 },
+          { "node": "Llamadas Transferidas", "type": "ai_tool", "index": 0 },
+          { "node": "Contar Contactos", "type": "ai_tool", "index": 0 },
+          { "node": "Enviar Email", "type": "ai_tool", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-02-02T14:30:00.000Z",
+  "versionId": "1"
+}
