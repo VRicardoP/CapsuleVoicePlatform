@@ -5,7 +5,12 @@ __pycache__/
 venv/
 .pytest_cache/
 .ruff_cache/
+.mypy_cache/
 *.egg-info/
+.coverage
+htmlcov/
+*.sqlite3
+*.db
 
 # Node / frontend
 node_modules/
@@ -22,6 +27,7 @@ dist/
 .vscode/
 .idea/
 .DS_Store
+Thumbs.db
 
 # Logs
 *.log
