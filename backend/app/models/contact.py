@@ -1,5 +1,5 @@
 """
-Contact model - Maps to sferaai.sql contacts table.
+Contact model - Maps to capsulecorp.sql contacts table.
 External contacts (customers/leads) - separate from internal users.
 
 RGPD Art. 32: All PII encrypted

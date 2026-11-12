@@ -1,4 +1,4 @@
-# SferaAI - Tests SQL de Cumplimiento Normativo
+# CapsuleCorp - Tests SQL de Cumplimiento Normativo
 
 **Versión:** 5.9.5
 **Última actualización:** 2025-12-18
@@ -9,7 +9,7 @@
 
 ## Resumen Ejecutivo
 
-Los tests SQL de SferaAI verifican el cumplimiento de **10+ normativas** europeas y españolas directamente a nivel de base de datos PostgreSQL.
+Los tests SQL de CapsuleCorp verifican el cumplimiento de **10+ normativas** europeas y españolas directamente a nivel de base de datos PostgreSQL.
 
 ### Estado de Cobertura: 100%
 
@@ -402,40 +402,40 @@ tests/
 # Desde el directorio raíz del proyecto
 for f in tests/[0-9]*.sql; do
     echo "Ejecutando $f..."
-    psql -U postgres -d sfera -f "$f"
+    psql -U postgres -d capsule -f "$f"
 done
 ```
 
 ### Ejecutar un test específico
 
 ```bash
-psql -U postgres -d sfera -f tests/02_test_funciones_cifrado.sql
+psql -U postgres -d capsule -f tests/02_test_funciones_cifrado.sql
 ```
 
 ### Ejecutar tests por categoría
 
 ```bash
 # Tests RGPD básicos (01-09)
-for f in tests/0[1-9]_test_*.sql; do psql -U postgres -d sfera -f "$f"; done
+for f in tests/0[1-9]_test_*.sql; do psql -U postgres -d capsule -f "$f"; done
 
 # Tests AI Act (26, 27, 35, 37-39, 42-44, 46)
-psql -U postgres -d sfera -f tests/26_test_p1_ai_transparency.sql
-psql -U postgres -d sfera -f tests/37_test_ai_risk_management.sql
+psql -U postgres -d capsule -f tests/26_test_p1_ai_transparency.sql
+psql -U postgres -d capsule -f tests/37_test_ai_risk_management.sql
 
 # Tests LOPDGDD
-psql -U postgres -d sfera -f tests/25_test_p0_lopdgdd_lgt.sql
+psql -U postgres -d capsule -f tests/25_test_p0_lopdgdd_lgt.sql
 
 # Tests Lista Robinson
-psql -U postgres -d sfera -f tests/28_test_p3_robinson.sql
+psql -U postgres -d capsule -f tests/28_test_p3_robinson.sql
 
 # Tests NIS2
-psql -U postgres -d sfera -f tests/47_test_nis2_cybersecurity.sql
+psql -U postgres -d capsule -f tests/47_test_nis2_cybersecurity.sql
 ```
 
 ### Con Docker
 
 ```bash
-docker exec -i sferaai-postgres psql -U postgres -d sfera < tests/02_test_funciones_cifrado.sql
+docker exec -i capsulecorp-postgres psql -U postgres -d capsule < tests/02_test_funciones_cifrado.sql
 ```
 
 ---
@@ -551,7 +551,7 @@ Todos los tests:
 
 ### Contexto del Proyecto
 
-SferaAI es un sistema de **asistente virtual en centralita** que:
+CapsuleCorp es un sistema de **asistente virtual en centralita** que:
 - Conecta con el backend y base de datos
 - Mantiene conversaciones con **clientes externos** de la empresa
 - Muestra información en un dashboard
@@ -560,11 +560,11 @@ SferaAI es un sistema de **asistente virtual en centralita** que:
 
 Se han identificado los siguientes gaps potenciales comparando `Normativa.md` con la implementación:
 
-| Gap | Normativa | Artículo | ¿Aplica a SferaAI? | Motivo |
+| Gap | Normativa | Artículo | ¿Aplica a CapsuleCorp? | Motivo |
 |-----|-----------|----------|-------------------|--------|
 | Biometría vocal | RGPD | Art. 9, Art. 4.14 | ❌ **No** | No se usa identificación por huella vocal |
 | Geolocalización | ePrivacy | Art. 9 | ❌ **No** | No se rastrea ubicación GPS del llamante |
-| Corresponsables | RGPD | Art. 26 | ❌ **No** | SferaAI es responsable único del tratamiento |
+| Corresponsables | RGPD | Art. 26 | ❌ **No** | CapsuleCorp es responsable único del tratamiento |
 | Emociones empleados | AI Act | Art. 5.1.f | ⚠️ **Condicional** | Solo si empleados internos llaman al sistema |
 | Control laboral | ET + LOPDGDD | Art. 20.3, Arts. 87-91 | ⚠️ **Condicional** | Solo si se graban empleados humanos |
 | Secreto comunicaciones | LGT | Art. 67 | ✅ **Sí** | Requisito documental (contratos externos) |
@@ -582,7 +582,7 @@ Se han identificado los siguientes gaps potenciales comparando `Normativa.md` co
 | Proveedor externo | ✅ **Sí** (informando según Art. 50.3) |
 | Empleado interno de la empresa | ❌ **No** (prohibido Art. 5.1.f) |
 
-**Aplicabilidad en SferaAI:**
+**Aplicabilidad en CapsuleCorp:**
 - El sistema está diseñado para atender **clientes externos**
 - El campo `is_employee_call` existe en la tabla `calls` para marcar excepciones
 - Si solo se atienden clientes externos → **No aplica la prohibición**
@@ -592,13 +592,13 @@ Se han identificado los siguientes gaps potenciales comparando `Normativa.md` co
 
 #### Control Laboral (ET Art. 20.3 + LOPDGDD Arts. 87-91)
 
-**Aplicabilidad en SferaAI:**
+**Aplicabilidad en CapsuleCorp:**
 - **No aplica** si el asistente IA atiende todas las llamadas
 - **Aplica** solo si hay transferencia a agentes humanos que también se graban
 
 ### Conclusión
 
-Para el caso de uso principal de SferaAI (asistente virtual atendiendo clientes externos):
+Para el caso de uso principal de CapsuleCorp (asistente virtual atendiendo clientes externos):
 
 | Categoría | Estado |
 |-----------|--------|

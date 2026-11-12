@@ -3,7 +3,7 @@
 -- ============================================================================
 -- Verifica las mitigaciones implementadas contra vulnerabilidades críticas:
 -- 1. Validación HMAC del GUC app.current_user_id
--- 2. Rol sfera_ops para funciones críticas
+-- 2. Rol capsule_ops para funciones críticas
 -- 3. REVOKE EXECUTE FROM PUBLIC
 -- 4. Control de acceso en SECURITY DEFINER
 -- ============================================================================
@@ -186,20 +186,20 @@ BEGIN
     END IF;
 
     -- ========================================================================
-    -- TEST 6: Rol sfera_ops existe
+    -- TEST 6: Rol capsule_ops existe
     -- ========================================================================
     RAISE NOTICE '';
-    RAISE NOTICE '--- Test 6: Rol sfera_ops creado ---';
+    RAISE NOTICE '--- Test 6: Rol capsule_ops creado ---';
 
-    SELECT EXISTS (SELECT FROM pg_roles WHERE rolname = 'sfera_ops')
+    SELECT EXISTS (SELECT FROM pg_roles WHERE rolname = 'capsule_ops')
     INTO v_role_exists;
 
     IF v_role_exists THEN
-        PERFORM report_test_result('PASS', 'sfera_ops Role Exists',
-            'Rol operacional sfera_ops creado correctamente');
+        PERFORM report_test_result('PASS', 'capsule_ops Role Exists',
+            'Rol operacional capsule_ops creado correctamente');
     ELSE
-        PERFORM report_test_result('FAIL', 'sfera_ops Role Exists',
-            'Rol sfera_ops no encontrado');
+        PERFORM report_test_result('FAIL', 'capsule_ops Role Exists',
+            'Rol capsule_ops no encontrado');
     END IF;
 
     -- ========================================================================

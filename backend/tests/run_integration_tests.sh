@@ -1,12 +1,12 @@
 #!/bin/bash
 # =============================================================================
-# SferaAI Backend Integration Tests Runner
+# CapsuleCorp Backend Integration Tests Runner
 # =============================================================================
 #
 # This script runs integration tests for the backend against PostgreSQL.
 #
 # Requirements:
-# - PostgreSQL database with sferaai.sql schema loaded
+# - PostgreSQL database with capsulecorp.sql schema loaded
 # - Python 3.12+ with pytest, pytest-asyncio installed
 # - Environment variables set (or defaults used)
 #
@@ -35,7 +35,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKEND_DIR="$(dirname "$SCRIPT_DIR")"
 
 echo -e "${BLUE}=============================================${NC}"
-echo -e "${BLUE}  SferaAI Backend Integration Tests${NC}"
+echo -e "${BLUE}  CapsuleCorp Backend Integration Tests${NC}"
 echo -e "${BLUE}=============================================${NC}"
 
 # =============================================================================
@@ -43,7 +43,7 @@ echo -e "${BLUE}=============================================${NC}"
 # =============================================================================
 
 # Database configuration (can be overridden by environment)
-export TEST_DATABASE_URL="${TEST_DATABASE_URL:-postgresql+asyncpg://postgres:postgres@localhost:5432/sfera}"
+export TEST_DATABASE_URL="${TEST_DATABASE_URL:-postgresql+asyncpg://postgres:postgres@localhost:5432/capsule}"
 
 # KMS keys for encryption tests
 export TEST_KMS_MASTER_KEY="${TEST_KMS_MASTER_KEY:-test_master_key_32_characters_!}"
@@ -133,7 +133,7 @@ async def check_schema():
 asyncio.run(check_schema())
 " 2>/dev/null; then
     echo -e "${RED}Error: Database schema not loaded${NC}"
-    echo "  Please run: psql -d sfera -f sferaai.sql"
+    echo "  Please run: psql -d capsule -f capsulecorp.sql"
     exit 1
 fi
 echo -e "  ${GREEN}Schema check OK${NC}"

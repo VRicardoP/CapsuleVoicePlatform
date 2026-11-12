@@ -9,7 +9,7 @@
 -- ============================================================================
 -- Verifica las tablas de métricas de rendimiento y conversiones
 -- Alimentan los gráficos del dashboard (radar, conversión trends)
--- Ejecutar: psql -U postgres -d sfera -f 17_test_performance_conversions.sql
+-- Ejecutar: psql -U postgres -d capsule -f 17_test_performance_conversions.sql
 -- ============================================================================
 
 -- Iniciar transacción para garantizar idempotencia

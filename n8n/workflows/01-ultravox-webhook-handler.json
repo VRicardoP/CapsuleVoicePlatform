@@ -1,5 +1,5 @@
 {
-  "name": "SferaAI - Ultravox Webhook Handler",
+  "name": "CapsuleCorp - Ultravox Webhook Handler",
   "nodes": [
     {
       "parameters": {
@@ -199,7 +199,7 @@
         "fromEmail": "noreply@yourdomain.com",
         "toEmail": "admin@tudominio.com",
         "subject": "ALERTA: Llamada Transferida - {{ $json.from_number }}",
-        "text": "ALERTA DE TRANSFERENCIA DE LLAMADA\n====================================\n\nUna llamada ha sido transferida a un agente humano.\n\nDetalles:\n- ID Llamada: {{ $json.call_id }}\n- Telefono Cliente: {{ $json.from_number }}\n- Duracion antes de transferir: {{ $json.duration_seconds }} segundos\n- Sentimiento detectado: {{ $json.sentiment }}\n\nResumen de la conversacion:\n{{ $json.call_summary }}\n\n------------------------------------\nSferaAI - Sistema de Gestion de Llamadas (Ultravox)",
+        "text": "ALERTA DE TRANSFERENCIA DE LLAMADA\n====================================\n\nUna llamada ha sido transferida a un agente humano.\n\nDetalles:\n- ID Llamada: {{ $json.call_id }}\n- Telefono Cliente: {{ $json.from_number }}\n- Duracion antes de transferir: {{ $json.duration_seconds }} segundos\n- Sentimiento detectado: {{ $json.sentiment }}\n\nResumen de la conversacion:\n{{ $json.call_summary }}\n\n------------------------------------\nCapsuleCorp - Sistema de Gestion de Llamadas (Ultravox)",
         "options": {}
       },
       "id": "b1c2d3e4-8888-8888-8888-888888888888",
@@ -213,7 +213,7 @@
         "fromEmail": "noreply@yourdomain.com",
         "toEmail": "admin@tudominio.com",
         "subject": "Resumen de Llamada - {{ $json.from_number }} ({{ $json.sentiment }})",
-        "text": "RESUMEN DE LLAMADA FINALIZADA\n====================================\n\nDetalles:\n- ID Llamada: {{ $json.call_id }}\n- Telefono Cliente: {{ $json.from_number }}\n- Duracion: {{ $json.duration_seconds }} segundos\n- Motivo de fin: {{ $json.disconnection_reason }}\n- Sentimiento: {{ $json.sentiment }}\n\nResumen:\n{{ $json.call_summary }}\n\n------------------------------------\nSferaAI - Sistema de Gestion de Llamadas (Ultravox)",
+        "text": "RESUMEN DE LLAMADA FINALIZADA\n====================================\n\nDetalles:\n- ID Llamada: {{ $json.call_id }}\n- Telefono Cliente: {{ $json.from_number }}\n- Duracion: {{ $json.duration_seconds }} segundos\n- Motivo de fin: {{ $json.disconnection_reason }}\n- Sentimiento: {{ $json.sentiment }}\n\nResumen:\n{{ $json.call_summary }}\n\n------------------------------------\nCapsuleCorp - Sistema de Gestion de Llamadas (Ultravox)",
         "options": {}
       },
       "id": "b1c2d3e4-9999-9999-9999-999999999999",

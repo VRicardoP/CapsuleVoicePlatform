@@ -1,4 +1,4 @@
-# Configuracion de Modulos - SferaAI
+# Configuracion de Modulos - CapsuleCorp
 
 > Documento estandar para configurar cualquier modulo en cualquier cliente.
 > Cada seccion es autocontenida: no es necesario consultar configuraciones de otros clientes.
@@ -104,7 +104,7 @@ Las grabaciones se habilitan con:
 RECORDING_ENABLED=true
 RECORDING_ENCRYPTION_KEY=      # Generar con: python3 -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
 RECORDING_CLIENT_ID={client_id}
-RECORDINGS_BASE_PATH=/opt/sferaai/data/recordings
+RECORDINGS_BASE_PATH=/opt/capsulecorp/data/recordings
 RECORDING_RETENTION_DAYS=3     # Dias antes de auto-eliminar (default: 3)
 ```
 
@@ -112,13 +112,13 @@ Volumenes necesarios en `docker-compose.yml` (backend + worker):
 
 ```yaml
 volumes:
-  - ./data/recordings:/opt/sferaai/data/recordings
+  - ./data/recordings:/opt/capsulecorp/data/recordings
 ```
 
 Permisos en el servidor:
 
 ```bash
-chown -R 999:999 /opt/sferaai/clientes/{client_id}/data/recordings
+chown -R 999:999 /opt/capsulecorp/clientes/{client_id}/data/recordings
 ```
 
 ### Verificacion
@@ -201,7 +201,7 @@ Para servir imagenes de templates con header IMAGE:
 
 ```yaml
 volumes:
-  - ./data/media:/opt/sferaai/data/media:ro
+  - ./data/media:/opt/capsulecorp/data/media:ro
 ```
 
 ### Labels Traefik adicionales (docker-compose.yml, backend)
@@ -286,24 +286,24 @@ O via API.
 
 ```bash
 # Token emitido una vez desde el panel (POST /auth/api-token), guardado como secret
-export SFERAAI_API_TOKEN=sferaai_at_xxxxxxxxxxxxx
+export CAPSULECORP_API_TOKEN=capsulecorp_at_xxxxxxxxxxxxx
 
 curl -s -X POST "https://{dominio}/api/v1/whatsapp/templates/sync" \
-  -H "Authorization: Bearer ${SFERAAI_API_TOKEN}"
+  -H "Authorization: Bearer ${CAPSULECORP_API_TOKEN}"
 ```
 
 **Sesión interactiva (curl con cookies)**: si necesitas un shell "one-shot" sin emitir un API token, el flujo BFF se puede recorrer con `curl -c` / `-b`:
 
 ```bash
-# Login — guarda las cookies (__Host-sferaai_session + sferaai_csrf) en un jar
-curl -s -c /tmp/sfera-cookies.txt -X POST "https://{dominio}/api/v1/auth/login" \
+# Login — guarda las cookies (__Host-capsulecorp_session + capsulecorp_csrf) en un jar
+curl -s -c /tmp/capsule-cookies.txt -X POST "https://{dominio}/api/v1/auth/login" \
   -H "Content-Type: application/json" \
   -d '{"email":"{admin_email}","password":"{admin_password}"}' >/dev/null
 
 # Para requests mutadores hay que enviar también el header X-CSRF-Token
-# (el valor se lee de la cookie `sferaai_csrf` guardada por el login)
-CSRF=$(awk '$6=="sferaai_csrf"{print $7}' /tmp/sfera-cookies.txt)
-curl -s -b /tmp/sfera-cookies.txt -X POST "https://{dominio}/api/v1/whatsapp/templates/sync" \
+# (el valor se lee de la cookie `capsulecorp_csrf` guardada por el login)
+CSRF=$(awk '$6=="capsulecorp_csrf"{print $7}' /tmp/capsule-cookies.txt)
+curl -s -b /tmp/capsule-cookies.txt -X POST "https://{dominio}/api/v1/whatsapp/templates/sync" \
   -H "X-CSRF-Token: ${CSRF}"
 ```
 
@@ -316,7 +316,7 @@ Las URLs de Meta CDN (`scontent.whatsapp.net`) son temporales y expiran. Para te
 1. Descargar la imagen del template
 2. Subirla al servidor:
    ```bash
-   scp imagen.png root@YOUR_SERVER_IP:/opt/sferaai/clientes/{client_id}/data/media/templates/
+   scp imagen.png root@YOUR_SERVER_IP:/opt/capsulecorp/clientes/{client_id}/data/media/templates/
    ```
 3. Actualizar `header_content` en DB:
    ```sql
@@ -441,10 +441,10 @@ Anadir el servicio `calcom`:
 
 ### Crear base de datos Cal.com
 
-Cal.com usa su propia DB `calcom` (NO la DB `sfera`):
+Cal.com usa su propia DB `calcom` (NO la DB `capsule`):
 
 ```bash
-docker exec {client_id}-postgres psql -U sfera_{client_id} -d postgres -c "CREATE DATABASE calcom;"
+docker exec {client_id}-postgres psql -U capsule_{client_id} -d postgres -c "CREATE DATABASE calcom;"
 ```
 
 > Cal.com ejecuta Prisma migrations automaticamente en el primer boot. La imagen es ~1.1GB.

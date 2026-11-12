@@ -415,7 +415,7 @@ async def report_client_error(
     db: Annotated[AsyncSession, Depends(get_db)],
     service: Annotated[ServiceIdentity, Depends(require_ai_agent)],
 ) -> ClientErrorReportResponse:
-    """Receive error reports from SferaAgentClient."""
+    """Receive error reports from CapsuleAgentClient."""
     error_repo = ClientErrorRepository(db)
     error_id = await error_repo.create(
         api_key_id=service.api_key_id,

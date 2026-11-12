@@ -50,7 +50,7 @@ class TestClientErrorLogCreation:
             {
                 "api_key_id": api_key.api_key_id,
                 "client_version": "1.1.0",
-                "error_type": "SferaClientError",
+                "error_type": "CapsuleClientError",
                 "error_message": "Error HTTP 500: Internal Server Error",
                 "method": "POST",
                 "endpoint": "/api/v1/ai-agent/calls",
@@ -95,7 +95,7 @@ class TestClientErrorLogCreation:
             {
                 "api_key_id": api_key.api_key_id,
                 "client_version": "1.1.0",
-                "error_type": "SferaValidationError",
+                "error_type": "CapsuleValidationError",
                 "error_message": "Error de validación",
                 "method": "POST",
                 "endpoint": "/api/v1/pbx/calls",
@@ -162,7 +162,7 @@ class TestClientErrorLogCreation:
             {
                 "api_key_id": api_key.api_key_id,
                 "client_version": "1.1.0",
-                "error_type": "SferaComplianceError",
+                "error_type": "CapsuleComplianceError",
                 "error_message": "AI disclosure not recorded",
                 "call_id": call_id,
                 "error_timestamp": datetime.now(UTC),
@@ -187,9 +187,9 @@ class TestClientErrorLogCreation:
         api_key = api_key_result.fetchone()
 
         stack_trace = """Traceback (most recent call last):
-  File "sfera_agent_client.py", line 640, in _request
+  File "capsule_agent_client.py", line 640, in _request
     raise error
-SferaClientError: Error de conexión: Cannot connect to host"""
+CapsuleClientError: Error de conexión: Cannot connect to host"""
 
         result = await db_session.execute(
             text("""
@@ -205,7 +205,7 @@ SferaClientError: Error de conexión: Cannot connect to host"""
             {
                 "api_key_id": api_key.api_key_id,
                 "client_version": "1.1.0",
-                "error_type": "SferaClientError",
+                "error_type": "CapsuleClientError",
                 "error_message": "Connection error",
                 "stack_trace": stack_trace,
                 "error_timestamp": datetime.now(UTC),
@@ -215,7 +215,7 @@ SferaClientError: Error de conexión: Cannot connect to host"""
 
         assert row is not None
         assert "Traceback" in row.stack_trace
-        assert "SferaClientError" in row.stack_trace
+        assert "CapsuleClientError" in row.stack_trace
 
 
 class TestClientErrorLogRetrieval:
@@ -284,7 +284,7 @@ class TestClientErrorLogRetrieval:
         api_key = api_key_result.fetchone()
 
         # Insert different error types
-        error_types = ["SferaClientError", "SferaAuthenticationError", "SferaClientError"]
+        error_types = ["CapsuleClientError", "CapsuleAuthenticationError", "CapsuleClientError"]
         for i, error_type in enumerate(error_types):
             await db_session.execute(
                 text("""
@@ -305,13 +305,13 @@ class TestClientErrorLogRetrieval:
                 },
             )
 
-        # Filter by SferaClientError
+        # Filter by CapsuleClientError
         result = await db_session.execute(
             text("""
                 SELECT COUNT(*)
                 FROM client_error_logs
                 WHERE api_key_id = :api_key_id
-                AND error_type = 'SferaClientError'
+                AND error_type = 'CapsuleClientError'
             """),
             {"api_key_id": api_key.api_key_id},
         )
@@ -400,7 +400,7 @@ class TestClientErrorLogResolution:
             {
                 "api_key_id": api_key.api_key_id,
                 "client_version": "1.1.0",
-                "error_type": "SferaClientError",
+                "error_type": "CapsuleClientError",
                 "error_message": "To be resolved",
                 "error_timestamp": datetime.now(UTC),
             },
@@ -489,14 +489,14 @@ class TestClientErrorLogPermissions:
 
     @pytest.mark.asyncio
     async def test_ai_agent_can_insert(self, db_session: AsyncSession):
-        """Verify sfera_ai_agent role can insert into client_error_logs."""
+        """Verify capsule_ai_agent role can insert into client_error_logs."""
         # Check if grant exists
         result = await db_session.execute(
             text("""
                 SELECT privilege_type
                 FROM information_schema.role_table_grants
                 WHERE table_name = 'client_error_logs'
-                AND grantee = 'sfera_ai_agent'
+                AND grantee = 'capsule_ai_agent'
                 AND privilege_type = 'INSERT'
             """)
         )
@@ -504,14 +504,14 @@ class TestClientErrorLogPermissions:
         assert row is not None
 
     @pytest.mark.asyncio
-    async def test_sfera_app_can_select_and_update(self, db_session: AsyncSession):
-        """Verify sfera_app role can SELECT and UPDATE client_error_logs."""
+    async def test_capsule_app_can_select_and_update(self, db_session: AsyncSession):
+        """Verify capsule_app role can SELECT and UPDATE client_error_logs."""
         result = await db_session.execute(
             text("""
                 SELECT privilege_type
                 FROM information_schema.role_table_grants
                 WHERE table_name = 'client_error_logs'
-                AND grantee = 'sfera_app'
+                AND grantee = 'capsule_app'
                 AND privilege_type IN ('SELECT', 'UPDATE')
             """)
         )

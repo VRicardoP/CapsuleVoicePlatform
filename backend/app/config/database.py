@@ -81,7 +81,7 @@ async def set_session_context(
     hmac_key: str | None = None,
     user_id: str | None = None,
 ) -> None:
-    """Set PostgreSQL session variables for SferaAI functions.
+    """Set PostgreSQL session variables for CapsuleCorp functions.
 
     This configures the session with the necessary keys and context
     for the database functions that require app.kms_master_key,

@@ -98,7 +98,7 @@ const Sidebar: React.FC<SidebarProps> = ({ user, onLogout, onOpenPrivacy, onOpen
     <aside id="sidebar" className="fixed left-0 top-0 h-full w-64 bg-gray-800 border-r border-gray-700 pt-3 px-6 pb-6 z-40 flex flex-col">
       {/* Header */}
       <div className="mb-2 flex-shrink-0 px-2">
-        <img src="/Logo Sfera AI.png" alt="Sfera AI" className="w-full h-auto" width={208} height={52} />
+        <img src="/icono.png" alt="Capsule Corp" className="h-12 w-auto mx-auto" width={52} height={52} />
       </div>
 
       {/* Navegación principal */}

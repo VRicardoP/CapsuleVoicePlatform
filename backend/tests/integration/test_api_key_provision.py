@@ -46,7 +46,7 @@ class TestAPIKeyProvisioningIntegration:
         row = result.fetchone()
 
         assert row is not None
-        assert row.api_key.startswith("sfera_ai_agent_")
+        assert row.api_key.startswith("capsule_ai_agent_")
         assert row.api_key_id is not None
 
         # Verify client_type stored correctly
@@ -77,7 +77,7 @@ class TestAPIKeyProvisioningIntegration:
         )
         row = result.fetchone()
 
-        assert row.api_key.startswith("sfera_pbx_")
+        assert row.api_key.startswith("capsule_pbx_")
 
     @pytest.mark.asyncio
     async def test_provision_external_client_type(self, db_session: AsyncSession):
@@ -98,7 +98,7 @@ class TestAPIKeyProvisioningIntegration:
         )
         row = result.fetchone()
 
-        assert row.api_key.startswith("sfera_external_")
+        assert row.api_key.startswith("capsule_external_")
 
     @pytest.mark.asyncio
     async def test_provision_webhook_client_type(self, db_session: AsyncSession):
@@ -119,7 +119,7 @@ class TestAPIKeyProvisioningIntegration:
         )
         row = result.fetchone()
 
-        assert row.api_key.startswith("sfera_webhook_")
+        assert row.api_key.startswith("capsule_webhook_")
 
     @pytest.mark.asyncio
     async def test_provision_duplicate_service_id_rejected(self, db_session: AsyncSession):

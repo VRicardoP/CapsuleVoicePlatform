@@ -174,7 +174,7 @@ class AIDisclosureCreate(BaseModel):
 class ConsentCreate(BaseModel):
     """Link a call to a consent + processing purpose.
 
-    Maps to call_processing_consents table (sferaai.sql line 1330).
+    Maps to call_processing_consents table (capsulecorp.sql line 1330).
     RGPD Art. 5.1.b: Purpose limitation per call.
     """
 

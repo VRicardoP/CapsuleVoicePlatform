@@ -210,7 +210,7 @@ class ConsentRepository(BaseRepository[DataConsent]):
 class CallConsentRepository(BaseRepository[CallProcessingConsent]):
     """
     Repository for call processing consents.
-    Maps to sferaai.sql line 1330.
+    Maps to capsulecorp.sql line 1330.
 
     Links calls to specific purposes and data_consents.
     RGPD Art. 5.1.b: Purpose limitation per call.

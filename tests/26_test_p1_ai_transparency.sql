@@ -14,7 +14,7 @@
 -- ============================================================================
 -- Verifica implementación de Art. 50 AI Act (transparencia en detección emocional)
 -- y Art. 14 (supervisión humana de sistemas de IA de alto riesgo)
--- Ejecutar: psql -U postgres -d sfera -f 26_test_p1_ai_transparency.sql
+-- Ejecutar: psql -U postgres -d capsule -f 26_test_p1_ai_transparency.sql
 -- ============================================================================
 
 -- Iniciar transacción para garantizar idempotencia

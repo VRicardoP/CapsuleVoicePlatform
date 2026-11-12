@@ -214,7 +214,7 @@ BEGIN
     INSERT INTO users (id, email, password_hash, role, name, is_active)
     VALUES (
         v_admin_id,
-        'admin_portability_' || v_unique_suffix || '@sfera.test',
+        'admin_portability_' || v_unique_suffix || '@capsule.test',
         crypt('TestPassword123!', gen_salt('bf', 12)),
         'admin',
         'Admin Portabilidad Test',
@@ -225,7 +225,7 @@ BEGIN
     INSERT INTO users (id, email, password_hash, role, name, is_active)
     VALUES (
         v_user_id,
-        'user_portability_' || v_unique_suffix || '@sfera.test',
+        'user_portability_' || v_unique_suffix || '@capsule.test',
         crypt('TestPassword123!', gen_salt('bf', 12)),
         'user',
         'Usuario Portabilidad Test',

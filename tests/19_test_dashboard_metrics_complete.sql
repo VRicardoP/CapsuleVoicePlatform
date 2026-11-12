@@ -10,7 +10,7 @@
 -- ============================================================================
 -- Verifica la función get_dashboard_metrics_complete() que devuelve todos
 -- los datos necesarios para el tipo DashboardData del frontend
--- Ejecutar: psql -U postgres -d sfera -f 19_test_dashboard_metrics_complete.sql
+-- Ejecutar: psql -U postgres -d capsule -f 19_test_dashboard_metrics_complete.sql
 -- ============================================================================
 
 -- Iniciar transacción para garantizar idempotencia

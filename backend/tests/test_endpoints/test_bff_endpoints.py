@@ -82,8 +82,8 @@ async def test_logout_sets_clearing_cookies_on_response(client, test_app):
         assert len(set_cookies) >= 3
         # Every Set-Cookie must target a known auth cookie name.
         joined = "\n".join(c if isinstance(c, str) else c.decode() for c in set_cookies)
-        assert "__Host-sferaai_session" in joined or "sferaai_session" in joined
-        assert "sferaai_csrf" in joined
+        assert "__Host-capsulecorp_session" in joined or "capsulecorp_session" in joined
+        assert "capsulecorp_csrf" in joined
         assert "access_token" in joined
     finally:
         auth_module.UserSessionRepository = orig_session

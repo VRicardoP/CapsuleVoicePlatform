@@ -2,7 +2,7 @@
 
 Phase 1 of the BFF migration:
 - ``POST /login``  → creates an opaque ``frontend_sessions`` row, sets
-  ``__Host-sferaai_session`` + CSRF cookies, and returns the user info.
+  ``__Host-capsulecorp_session`` + CSRF cookies, and returns the user info.
   Tokens never leave the backend.
 - ``POST /logout`` → revokes the frontend session (and the underlying
   ``user_sessions`` row), clears cookies.
@@ -66,8 +66,8 @@ settings = get_settings()
 MAX_LOGIN_ATTEMPTS = 5
 LOCKOUT_DURATION_MINUTES = 15
 
-# API token format: "sferaai_at_<urlsafe-32-bytes>"
-API_TOKEN_PREFIX = "sferaai_at_"
+# API token format: "capsulecorp_at_<urlsafe-32-bytes>"
+API_TOKEN_PREFIX = "capsulecorp_at_"
 
 
 # ===========================================================================

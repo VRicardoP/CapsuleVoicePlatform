@@ -92,23 +92,5 @@
   "versionCounter": 57,
   "triggerCount": 1,
   "tags": [],
-  "shared": [
-    {
-      "updatedAt": "2026-02-11T15:32:53.000Z",
-      "createdAt": "2026-02-11T15:32:53.000Z",
-      "role": "workflow:owner",
-      "workflowId": "b-gVmRsy353u581966Sqp",
-      "projectId": "9IERdek4HuyaGzG6",
-      "project": {
-        "updatedAt": "2025-10-28T17:39:07.767Z",
-        "createdAt": "2025-10-28T17:36:40.145Z",
-        "id": "9IERdek4HuyaGzG6",
-        "name": "sfera ai <mariviceandro@hotmail.com>",
-        "type": "personal",
-        "icon": null,
-        "description": null,
-        "creatorId": "6cbf8a63-d32a-4fdf-8f27-781bb1ba826b"
-      }
-    }
-  ]
+  "shared": []
 }

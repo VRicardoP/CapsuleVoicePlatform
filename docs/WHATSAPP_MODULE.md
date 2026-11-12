@@ -1,4 +1,4 @@
-# Modulo WhatsApp Business — SferaAI
+# Modulo WhatsApp Business — CapsuleCorp
 
 > **Estado:** Completo. Desplegado en producción desde 2026-02-26.
 

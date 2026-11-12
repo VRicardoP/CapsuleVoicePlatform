@@ -1,5 +1,5 @@
 """
-WhatsApp Business models for SferaAI.
+WhatsApp Business models for CapsuleCorp.
 
 Split into domain-specific modules:
 - core: WATenantSettings, WAContact, WAConversation, WAMessage, WAEvent

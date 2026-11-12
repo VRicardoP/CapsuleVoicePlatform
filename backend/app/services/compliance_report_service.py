@@ -69,7 +69,7 @@ class ComplianceReportService:
                 "period_end": period_end.strftime("%d/%m/%Y"),
                 "generated_by": generated_by,
                 "user_role": user_role,
-                "organization_name": data.get("organization_name", "SferaAI"),
+                "organization_name": data.get("organization_name", "CapsuleCorp"),
                 "version": "1.0.0",
             }
         )
@@ -148,7 +148,7 @@ class ComplianceReportService:
             "requests_summary": requests_summary,
             "ai_decisions": ai_decisions,
             "retention": retention,
-            "organization_name": "SferaAI",
+            "organization_name": "CapsuleCorp",
         }
 
     async def _get_audit_integrity(self) -> dict:

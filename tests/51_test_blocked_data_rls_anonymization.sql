@@ -14,7 +14,7 @@
 -- 51.5-51.7: Función register_blocked_data_access
 -- 51.8-51.9: Vista v_blocked_data_pending_destruction
 -- 51.10-51.12: Anonimización de terceros en exportaciones
--- Ejecutar: psql -U postgres -d sfera -f 51_test_blocked_data_rls_anonymization.sql
+-- Ejecutar: psql -U postgres -d capsule -f 51_test_blocked_data_rls_anonymization.sql
 -- ============================================================================
 
 BEGIN;
@@ -101,7 +101,7 @@ BEGIN
 END $$;
 
 -- ============================================================================
--- TEST 51.3: Rol sfera_judicial_authority existe
+-- TEST 51.3: Rol capsule_judicial_authority existe
 -- ============================================================================
 
 \echo '--- Test 51.3: Rol judicial_authority existe ---'
@@ -113,15 +113,15 @@ DECLARE
     v_details TEXT;
 BEGIN
     SELECT EXISTS (
-        SELECT 1 FROM pg_roles WHERE rolname = 'sfera_judicial_authority'
+        SELECT 1 FROM pg_roles WHERE rolname = 'capsule_judicial_authority'
     ) INTO v_role_exists;
 
     IF v_role_exists THEN
         v_status := 'PASS';
-        v_details := 'Rol sfera_judicial_authority existe para autoridades judiciales';
+        v_details := 'Rol capsule_judicial_authority existe para autoridades judiciales';
     ELSE
         v_status := 'FAIL';
-        v_details := 'Rol sfera_judicial_authority NO existe';
+        v_details := 'Rol capsule_judicial_authority NO existe';
     END IF;
 
     INSERT INTO test_results (test_name, test_category, status, details)

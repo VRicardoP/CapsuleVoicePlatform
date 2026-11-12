@@ -19,7 +19,7 @@
 -- ============================================================================
 -- Verifica que existe un sistema de gobernanza de datos de entrenamiento IA
 -- con análisis de sesgos documentado
--- Ejecutar: psql -U postgres -d sfera -f 38_test_ai_data_governance.sql
+-- Ejecutar: psql -U postgres -d capsule -f 38_test_ai_data_governance.sql
 -- ============================================================================
 
 -- Iniciar transacción para garantizar idempotencia

@@ -109,7 +109,7 @@ Create a new call record.
 API Key example:
 ```
 curl -X POST /api/v1/calls \\
-  -H "X-API-Key: sfera_ai_agent_abc123..." \\
+  -H "X-API-Key: capsule_ai_agent_abc123..." \\
   -H "Content-Type: application/json" \\
   -d '{"direction": "inbound", "status": "initiated"}'
 ```

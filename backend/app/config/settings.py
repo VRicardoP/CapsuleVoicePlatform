@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     )
 
     # Application
-    app_name: str = "SferaAI API"
+    app_name: str = "CapsuleCorp API"
     app_version: str = "1.0.0"
     debug: bool = False
     environment: Literal["development", "staging", "production"] = "development"
@@ -33,7 +33,7 @@ class Settings(BaseSettings):
     postgres_port: int = 5432
     postgres_user: str = "postgres"
     postgres_password: str = Field(default="", repr=False)
-    postgres_db: str = "sfera"
+    postgres_db: str = "capsule"
     postgres_pool_size: int = 10
     postgres_max_overflow: int = 20
 
@@ -105,7 +105,7 @@ class Settings(BaseSettings):
 
     # Recordings
     recording_enabled: bool = True
-    recordings_base_path: str = "/opt/sferaai/data/recordings"
+    recordings_base_path: str = "/opt/capsulecorp/data/recordings"
     recording_encryption_key: str = Field(default="", repr=False)
     recording_max_concurrent: int = 2
     recording_retention_days: int = 3
@@ -144,7 +144,7 @@ class Settings(BaseSettings):
     whatsapp_max_concurrent_sends: int = 5
 
     # Media files (WhatsApp template images, etc.)
-    media_dir: str = "/opt/sferaai/data/media"
+    media_dir: str = "/opt/capsulecorp/data/media"
 
     @model_validator(mode="after")
     def _validate_production_secrets(self) -> "Settings":
@@ -188,7 +188,7 @@ class Settings(BaseSettings):
         )
 
     # Marketplace
-    marketplace_file_path: str = "/opt/sferaai/marketplace.json"
+    marketplace_file_path: str = "/opt/capsulecorp/marketplace.json"
 
     # Dashboard: recent calls display
     recent_calls_limit: int = Field(default=200, description="Max recent calls shown in dashboard")
@@ -268,7 +268,7 @@ class Settings(BaseSettings):
     smtp_password: str = Field(default="", repr=False)
     smtp_tls: bool = Field(default=True)
     smtp_from_email: str = Field(default="noreply@yourdomain.com")
-    smtp_from_name: str = Field(default="Sfera AI Dashboard")
+    smtp_from_name: str = Field(default="Capsule Corp Dashboard")
     contact_email: str = Field(default="avisos@yourdomain.com")
 
 

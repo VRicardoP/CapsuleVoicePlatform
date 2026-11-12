@@ -12,7 +12,7 @@
 -- ============================================================================
 -- Verifica las tablas campaigns y campaign_calls
 -- Alimenta el módulo de campañas del dashboard
--- Ejecutar: psql -U postgres -d sfera -f 18_test_campaigns.sql
+-- Ejecutar: psql -U postgres -d capsule -f 18_test_campaigns.sql
 -- ============================================================================
 
 -- Iniciar transacción para garantizar idempotencia

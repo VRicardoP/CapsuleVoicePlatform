@@ -17,7 +17,7 @@
 --   - Detección automática de datos sensibles
 --   - Gestión de excepciones y aprobaciones DPO
 --
--- Ejecutar: psql -U postgres -d sfera -f 11_test_sensitive_data.sql
+-- Ejecutar: psql -U postgres -d capsule -f 11_test_sensitive_data.sql
 -- ============================================================================
 
 -- Iniciar transacción para garantizar idempotencia

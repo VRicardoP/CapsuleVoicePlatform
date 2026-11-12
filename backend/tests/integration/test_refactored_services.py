@@ -7,7 +7,7 @@ real PostgreSQL. These tests catch:
 - Mixin inheritance issues with self.db
 - Repository method execution against real schema
 
-Requires: PostgreSQL on localhost:5433 with sferaai.sql schema loaded.
+Requires: PostgreSQL on localhost:5433 with capsulecorp.sql schema loaded.
 """
 
 from datetime import UTC, datetime

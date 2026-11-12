@@ -1,5 +1,5 @@
 /**
- * SferaAI WhatsApp Widget
+ * CapsuleCorp WhatsApp Widget
  * Embeddable chat button that opens WhatsApp conversation.
  *
  * Usage:

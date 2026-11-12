@@ -1,4 +1,4 @@
-# Panel de Administracion Central - SferaAI
+# Panel de Administracion Central - CapsuleCorp
 
 > **Estado:** Pendiente de implementacion (feature futura)
 > **Ultima actualizacion:** 2026-04-14
@@ -9,7 +9,7 @@
 > Este panel central complementaria el sistema existente con gestion multi-cliente.
 > **Nota (2026-04-14):** Las rutas de auth aquí documentadas (`/api/auth/login`, `/api/auth/refresh`) corresponden
 > a este panel central hipotético, **NO al backend de cliente**. El backend de cliente usa BFF con cookies opacas
-> (`__Host-sferaai_session`); ver [`BFF_SESSIONS.md`](BFF_SESSIONS.md).
+> (`__Host-capsulecorp_session`); ver [`BFF_SESSIONS.md`](BFF_SESSIONS.md).
 
 ## Indice
 
@@ -29,7 +29,7 @@
 
 ## Resumen
 
-Panel de administracion centralizado para gestionar todos los clientes de SferaAI desde un unico punto. Permite:
+Panel de administracion centralizado para gestionar todos los clientes de CapsuleCorp desde un unico punto. Permite:
 
 - Ver el estado (online/offline) de todos los clientes en tiempo real
 - Activar y desactivar modulos del dashboard por cliente (sin reiniciar contenedores)
@@ -53,7 +53,7 @@ En la arquitectura single-tenant actual, cada cliente tiene su propio stack Dock
 
 ```
 +-----------------------------------------------------------+
-|              SFERAAI ADMIN PANEL                          |
+|              CAPSULECORP ADMIN PANEL                          |
 |         admin.yourdomain.com (nuevo servicio)               |
 +-----------------------------------------------------------+
 |                                                           |
@@ -218,7 +218,7 @@ El admin panel solo es accesible desde IPs autorizadas.
 ```yaml
 # docker-compose del admin panel
 labels:
-  - "traefik.http.middlewares.admin-ipwhitelist.ipwhitelist.sourcerange=95.61.246.84/32,OTRA_IP/32"
+  - "traefik.http.middlewares.admin-ipwhitelist.ipwhitelist.sourcerange=TU_IP/32,OTRA_IP/32"
   - "traefik.http.routers.admin.middlewares=admin-ipwhitelist"
 ```
 
@@ -533,7 +533,7 @@ Basado en los 15 modulos existentes en `dashboard/src/config/modulesConfig.ts`:
 
 ```
 +-------------------------------------------------------+
-|  SferaAI Admin                     admin@yourdomain.com |
+|  CapsuleCorp Admin                     admin@yourdomain.com |
 +-------------------------------------------------------+
 |                                                       |
 |  Clientes activos (3)                     [+ Nuevo]   |
@@ -552,7 +552,7 @@ Basado en los 15 modulos existentes en `dashboard/src/config/modulesConfig.ts`:
 
 ```
 +-------------------------------------------------------+
-|  SferaAI Admin > Acme Dental                     |
+|  CapsuleCorp Admin > Acme Dental                     |
 +-------------------------------------------------------+
 |                                                       |
 |  Estado: OK (45ms)    Plan: Pro    Desde: 2026-02-09  |
@@ -626,16 +626,16 @@ Basado en los 15 modulos existentes en `dashboard/src/config/modulesConfig.ts`:
 ### Docker Compose del Admin Panel
 
 ```yaml
-# /opt/sferaai/admin/docker-compose.yml
+# /opt/capsulecorp/admin/docker-compose.yml
 version: '3.8'
 
 services:
   admin-db:
     image: postgres:16-alpine
-    container_name: sferaai-admin-db
+    container_name: capsulecorp-admin-db
     restart: unless-stopped
     environment:
-      POSTGRES_DB: sferaai_admin
+      POSTGRES_DB: capsulecorp_admin
       POSTGRES_USER: ${ADMIN_DB_USER}
       POSTGRES_PASSWORD: ${ADMIN_DB_PASSWORD}
     volumes:
@@ -649,11 +649,11 @@ services:
       retries: 5
 
   admin-api:
-    image: sferaai-admin-api:latest
-    container_name: sferaai-admin-api
+    image: capsulecorp-admin-api:latest
+    container_name: capsulecorp-admin-api
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgresql+asyncpg://${ADMIN_DB_USER}:${ADMIN_DB_PASSWORD}@admin-db:5432/sferaai_admin
+      DATABASE_URL: postgresql+asyncpg://${ADMIN_DB_USER}:${ADMIN_DB_PASSWORD}@admin-db:5432/capsulecorp_admin
       JWT_SECRET: ${ADMIN_JWT_SECRET}
       HEALTH_CHECK_INTERVAL: 30
     depends_on:
@@ -675,8 +675,8 @@ services:
       - "traefik.docker.network=proxy"
 
   admin-dashboard:
-    image: sferaai-admin-dashboard:latest
-    container_name: sferaai-admin-dashboard
+    image: capsulecorp-admin-dashboard:latest
+    container_name: capsulecorp-admin-dashboard
     restart: unless-stopped
     networks:
       - proxy

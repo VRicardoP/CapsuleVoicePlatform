@@ -664,7 +664,7 @@ BEGIN
         'CVE-2025-0001',
         'Test Vulnerability for NIS2',
         'Vulnerabilidad de prueba para verificar estructura NIS2 Art. 21.2.e',
-        'sferaai-database',
+        'capsulecorp-database',
         'configuration',
         7.5,
         'high',

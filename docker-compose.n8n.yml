@@ -1,7 +1,7 @@
 version: '3.8'
 
 # ============================================================================
-# n8n - Workflow Automation para SferaAI
+# n8n - Workflow Automation para CapsuleCorp
 # ============================================================================
 # Este archivo es específico de la rama retell-n8n
 # Para Make.com, usar la rama retell-ai
@@ -10,7 +10,7 @@ version: '3.8'
 services:
   n8n:
     image: n8nio/n8n:2.6.4
-    container_name: sferaai-n8n
+    container_name: capsulecorp-n8n
     restart: unless-stopped
     deploy:
       resources:
@@ -54,12 +54,12 @@ services:
       - DB_TYPE=sqlite
       - DB_SQLITE_DATABASE=/home/node/.n8n/database.sqlite
 
-      # Opción B: PostgreSQL (descomentar para usar la misma BD que SferaAI)
+      # Opción B: PostgreSQL (descomentar para usar la misma BD que CapsuleCorp)
       # - DB_TYPE=postgresdb
       # - DB_POSTGRESDB_HOST=${POSTGRES_HOST:-postgres}
       # - DB_POSTGRESDB_PORT=${POSTGRES_PORT:-5432}
       # - DB_POSTGRESDB_DATABASE=${N8N_DB_NAME:-n8n}
-      # - DB_POSTGRESDB_USER=${POSTGRES_USER:-sferaai}
+      # - DB_POSTGRESDB_USER=${POSTGRES_USER:-capsulecorp}
       # - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD}
       # - DB_POSTGRESDB_SCHEMA=n8n
 
@@ -86,7 +86,7 @@ services:
       - n8n_files:/files
 
     networks:
-      - sferaai-network
+      - capsulecorp-network
 
     labels:
       # ─────────────────────────────────────────────────────────────────────
@@ -122,6 +122,6 @@ volumes:
 # Redes
 # ─────────────────────────────────────────────────────────────────────────────
 networks:
-  sferaai-network:
+  capsulecorp-network:
     external: true
-    name: ${DOCKER_NETWORK:-sferaai-network}
+    name: ${DOCKER_NETWORK:-capsulecorp-network}

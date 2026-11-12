@@ -10,7 +10,7 @@ Tests use the actual PostgreSQL database to verify:
 - Robinson list checks
 - Session management
 
-IMPORTANT: Tests require the sferaai.sql schema to be loaded in PostgreSQL.
+IMPORTANT: Tests require the capsulecorp.sql schema to be loaded in PostgreSQL.
 """
 
 import os
@@ -32,7 +32,7 @@ from sqlalchemy.ext.asyncio import (
 # =============================================================================
 
 TEST_DATABASE_URL = os.getenv(
-    "TEST_DATABASE_URL", "postgresql+asyncpg://postgres:postgres@localhost:5433/sfera"
+    "TEST_DATABASE_URL", "postgresql+asyncpg://postgres:postgres@localhost:5433/capsule"
 )
 
 # KMS keys for encryption tests (must match PostgreSQL SET commands)
@@ -79,7 +79,7 @@ async def db_session() -> AsyncGenerator[AsyncSession, None]:
     )
 
     async with factory() as session:
-        # Set up PostgreSQL session context for SferaAI functions
+        # Set up PostgreSQL session context for CapsuleCorp functions
         # Note: SET commands don't accept parameters, use literal strings
         await session.execute(text(f"SET app.kms_master_key = '{TEST_KMS_MASTER_KEY}'"))
         await session.execute(text(f"SET app.audit_hmac_key = '{TEST_AUDIT_HMAC_KEY}'"))

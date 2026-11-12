@@ -1,5 +1,5 @@
 /**
- * Centralized date/time formatting for SferaAI.
+ * Centralized date/time formatting for CapsuleCorp.
  *
  * Conventions:
  * - Dates: dd/mm/yyyy (es-ES)

@@ -1,5 +1,5 @@
 """
-Audit and compliance models - Maps to sferaai.sql audit tables.
+Audit and compliance models - Maps to capsulecorp.sql audit tables.
 RGPD Art. 30: Register of processing activities
 RGPD Art. 33: Security breach logging
 LOPDGDD Art. 33: Blocked data tracking
@@ -156,7 +156,7 @@ class AuditLog(Base):
 
 class SecurityBreach(Base):
     """
-    Security breach tracking. Maps to sferaai.sql line 6430.
+    Security breach tracking. Maps to capsulecorp.sql line 6430.
 
     RGPD Art. 33: Notification to authority within 72 hours
     RGPD Art. 34: Communication to data subjects

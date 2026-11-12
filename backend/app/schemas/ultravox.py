@@ -254,11 +254,11 @@ class CustomerContextFunctionResponse(BaseModel):
 # ============================================================================
 
 
-class UltravoxToSferaCallMapping(BaseModel):
-    """Mapping of Ultravox call data to SferaAI call model."""
+class UltravoxToCapsuleCallMapping(BaseModel):
+    """Mapping of Ultravox call data to CapsuleCorp call model."""
 
     ultravox_call_id: str
-    sfera_call_id: str | None = None
+    capsule_call_id: str | None = None
     direction: str
     caller_number: str | None
     called_number: str | None

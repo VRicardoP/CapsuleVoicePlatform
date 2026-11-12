@@ -118,7 +118,7 @@ class GDPRDataExport(BaseModel):
 class ConsentRecord(BaseModel):
     """Consent record for RGPD Art. 7 compliance.
 
-    Maps to data_consents table (sferaai.sql line 788).
+    Maps to data_consents table (capsulecorp.sql line 788).
     Active = consent_given=True AND revoked_at IS NULL.
     """
 
@@ -195,7 +195,7 @@ class BlockedDataInfo(BaseModel):
 class AIDecisionInfo(BaseModel):
     """AI decision information for AI Act Art. 12 compliance.
 
-    Maps to ai_decision_logs table (sferaai.sql line 1655).
+    Maps to ai_decision_logs table (capsulecorp.sql line 1655).
     Used when AI makes or assists in decisions.
     """
 

@@ -13,7 +13,7 @@
 -- ============================================================================
 -- Verifica la correcta gestión de consentimientos vinculados a llamadas
 -- Art. 5.1.b RGPD (limitación de finalidad)
--- Ejecutar: psql -U postgres -d sfera -f 15_test_call_processing_consents.sql
+-- Ejecutar: psql -U postgres -d capsule -f 15_test_call_processing_consents.sql
 -- ============================================================================
 
 -- Iniciar transacción para garantizar idempotencia

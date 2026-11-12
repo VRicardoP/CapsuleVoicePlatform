@@ -28,7 +28,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ user, onLogout }) => {
 
   const handleMarketplaceRequest = (modules: { id: string; name: string; icon: string }[]) => {
     const modulesList = modules.map(m => `  - ${m.icon} ${m.name}`).join('\n');
-    const message = `Estimado equipo de Sfera AI,
+    const message = `Estimado equipo de Capsule Corp,
 
 Me gustaría solicitar información sobre los siguientes módulos del Marketplace de Integraciones:
 

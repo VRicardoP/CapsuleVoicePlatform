@@ -315,7 +315,7 @@ class HumanEscalationResponse(BaseModel):
 
 
 class ClientErrorReport(BaseModel):
-    """Error report from SferaAgentClient.
+    """Error report from CapsuleAgentClient.
 
     Allows automatic error reporting from the Python client used by
     the conversational agent, without requiring manual log sharing.

@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================================
-# Script para ejecutar todos los 52 tests de SferaAI (Compliance Completo)
+# Script para ejecutar todos los 52 tests de CapsuleCorp (Compliance Completo)
 # ============================================================================
 # Ejecutar: ./tests/run_all_tests.sh
 # Última actualización: 2025-12-05 - Añadido test 52 (Mitigaciones de Seguridad)
@@ -16,7 +16,7 @@ NC='\033[0m' # No Color
 # Configuración de base de datos
 DB_HOST="${DB_HOST:-localhost}"
 DB_USER="${DB_USER:-postgres}"
-DB_NAME="${DB_NAME:-sfera}"
+DB_NAME="${DB_NAME:-capsule}"
 DB_PASS="${DB_PASS:-Pretoriano.}"
 
 # Directorio de tests
@@ -85,7 +85,7 @@ TEST_FILES=(
 )
 
 echo -e "${BLUE}=============================================="
-echo "  SFERAAI - Suite de Tests de Compliance"
+echo "  CAPSULECORP - Suite de Tests de Compliance"
 echo "=============================================="
 echo -e "  Fecha: $(date '+%Y-%m-%d %H:%M:%S')"
 echo -e "  Base de datos: $DB_NAME@$DB_HOST"

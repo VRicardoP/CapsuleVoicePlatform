@@ -20,7 +20,7 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    """Baseline stamp — schema created by sferaai.sql + Base.metadata.create_all.
+    """Baseline stamp — schema created by capsulecorp.sql + Base.metadata.create_all.
 
     This migration is intentionally empty. It serves as the Alembic baseline
     for databases that predate the migration system. Run `alembic stamp head`

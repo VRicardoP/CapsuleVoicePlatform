@@ -1,4 +1,4 @@
-"""Alembic environment configuration for SferaAI."""
+"""Alembic environment configuration for CapsuleCorp."""
 
 import asyncio
 from logging.config import fileConfig

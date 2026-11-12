@@ -14,7 +14,7 @@
 -- Verifica:
 -- P2.7: Tabla ai_decision_logs para trazabilidad IA (Art. 12)
 -- P2.8: Prohibición análisis emocional empleados (Art. 5.1.f)
--- Ejecutar: psql -U postgres -d sfera -f 27_test_p2_ai_employee.sql
+-- Ejecutar: psql -U postgres -d capsule -f 27_test_p2_ai_employee.sql
 -- ============================================================================
 
 -- Iniciar transacción para garantizar idempotencia

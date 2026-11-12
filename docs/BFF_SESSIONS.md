@@ -6,11 +6,11 @@ Fase 1 implementada el 2026-04-13 (commit `4205263`). Fase 1.5 (retirada del pat
 
 Antes, el backend emitía JWTs (`access_token` + `refresh_token`) en el body de `/auth/login` y en cookies HttpOnly. El navegador no los leía pero los JS clients dependían del shape de la respuesta. Si se filtraban (XSS, logs mal configurados) bastaban para impersonar al usuario.
 
-Ahora el navegador sólo ve una cookie opaca (`__Host-sferaai_session` en producción, `sferaai_session` en dev) que el backend resuelve contra la tabla `frontend_sessions`. Los JWTs no salen del proceso backend. Un robo de cookie sigue siendo crítico, pero:
+Ahora el navegador sólo ve una cookie opaca (`__Host-capsulecorp_session` en producción, `capsulecorp_session` en dev) que el backend resuelve contra la tabla `frontend_sessions`. Los JWTs no salen del proceso backend. Un robo de cookie sigue siendo crítico, pero:
 
 - La cookie es `HttpOnly` (JS no la ve, XSS no la roba).
 - Cada sesión tiene `idle_expires_at` (30 min sin actividad) + `absolute_expires_at` (12 h máx).
-- CSRF se valida con doble capa: `Origin`/`Referer` + double-submit token (`sferaai_csrf` no-HttpOnly + header `X-CSRF-Token`).
+- CSRF se valida con doble capa: `Origin`/`Referer` + double-submit token (`capsulecorp_csrf` no-HttpOnly + header `X-CSRF-Token`).
 
 ## Tablas
 
@@ -27,7 +27,7 @@ Campos clave:
 
 ### `api_tokens`
 
-Tokens bearer para uso server-to-server (CI, automatizaciones). Formato `sferaai_at_<base64>`.
+Tokens bearer para uso server-to-server (CI, automatizaciones). Formato `capsulecorp_at_<base64>`.
 
 Campos clave:
 - `token_hash` (único), `user_id`, `scope[]`, `description`, `expires_at`.
@@ -36,7 +36,7 @@ Campos clave:
 ## Flow por request
 
 ```
-┌─────────┐     Cookie __Host-sferaai_session     ┌──────────────────┐
+┌─────────┐     Cookie __Host-capsulecorp_session     ┌──────────────────┐
 │ Browser │ ─────────────────────────────────────▶│ BFFMiddleware    │
 └─────────┘                                        │ resuelve cookie  │
                                                    │  → frontend_sess │
@@ -73,7 +73,7 @@ Rutas que **NO pasan por BFF** (se documentan en `EXCLUDED_PREFIXES` del middlew
 - `/api/v1/marketplace` — público.
 - `/docs`, `/redoc`, `/openapi.json`, `/media`.
 
-Rutas con **API Key** (`X-API-Key`) o **bearer `sferaai_at_*`** también bypasean BFF porque no son cookie-based y por tanto no son CSRF-vulnerables.
+Rutas con **API Key** (`X-API-Key`) o **bearer `capsulecorp_at_*`** también bypasean BFF porque no son cookie-based y por tanto no son CSRF-vulnerables.
 
 ## Flujos
 
@@ -87,8 +87,8 @@ body: { email, password }
 Respuesta: `200` con body `{ user: {...} }`. Sin tokens en el body (campos `access_token` y `refresh_token` llegan vacíos por compat — retirados en fase 1.5). Headers devueltos:
 
 ```
-Set-Cookie: __Host-sferaai_session=<opaque>; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=43200
-Set-Cookie: sferaai_csrf=<random>; Secure; SameSite=Lax; Path=/; Max-Age=43200
+Set-Cookie: __Host-capsulecorp_session=<opaque>; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=43200
+Set-Cookie: capsulecorp_csrf=<random>; Secure; SameSite=Lax; Path=/; Max-Age=43200
 ```
 
 ### Logout
@@ -98,7 +98,7 @@ POST /api/v1/auth/logout
 body: { invalidate_all_sessions: false }
 ```
 
-Requiere sesión activa. Revoca la `frontend_session` actual + el `user_session` asociado. Devuelve `204` y `Set-Cookie` borrando `__Host-sferaai_session`, `sferaai_csrf`, `access_token`, `refresh_token`.
+Requiere sesión activa. Revoca la `frontend_session` actual + el `user_session` asociado. Devuelve `204` y `Set-Cookie` borrando `__Host-capsulecorp_session`, `capsulecorp_csrf`, `access_token`, `refresh_token`.
 
 Si `invalidate_all_sessions: true`, revoca todas las sesiones del usuario (logout en todos los dispositivos).
 
@@ -112,7 +112,7 @@ Clients nuevos NO deben llamar a `/refresh`. Clients legacy siguen funcionando s
 
 Durante 7 días tras el rollout, el middleware acepta también la cookie `access_token` legacy y la auto-upgradea:
 
-1. Detecta cookie `access_token` sin `__Host-sferaai_session`.
+1. Detecta cookie `access_token` sin `__Host-capsulecorp_session`.
 2. Valida el JWT contra `user_sessions`.
 3. Adquiere `pg_advisory_xact_lock` por `backend_session_id` (key determinística con SHA-256, segura bajo multi-worker).
 4. Re-verifica (double-checked locking) y crea la `frontend_session` sólo si no existe.
@@ -136,7 +136,7 @@ Ciertos endpoints requieren que la sesión tenga `recent_auth_at` dentro de una 
 Si la sesión está "fría" (ej. 10 min sin re-auth), el endpoint devuelve `401` con:
 
 ```
-WWW-Authenticate: SferaAI re-auth-required
+WWW-Authenticate: CapsuleCorp re-auth-required
 X-Reauth-Code: REAUTH_REQUIRED
 ```
 
@@ -163,7 +163,7 @@ Respuesta `201`:
 ```json
 {
   "id": "uuid",
-  "token": "sferaai_at_<base64>",
+  "token": "capsulecorp_at_<base64>",
   "description": "CI nightly backup",
   "scope": ["calls.read", "leads.read"],
   "expires_at": "2026-04-14T...",
@@ -182,7 +182,7 @@ Limites:
 
 ```
 GET /api/v1/captacion/leads
-Authorization: Bearer sferaai_at_<base64>
+Authorization: Bearer capsulecorp_at_<base64>
 ```
 
 El token vale únicamente para los permisos declarados en `scope`. El issuer tenía `*` (superadmin), pero un token con `scope=["calls.read"]` sólo puede hacer llamadas que requieren `calls.read`. Esto se aplica en `get_current_principal` cuando `auth_source == "api_token"`.
@@ -206,11 +206,11 @@ DELETE /api/v1/auth/api-tokens/{id}  # revoke (require_recent_auth)
 El middleware valida CSRF sólo para requests con cookie BFF y método mutador (POST/PUT/PATCH/DELETE):
 
 1. **Origin/Referer check**: la URL debe venir del mismo host que la request. En desarrollo se permite `localhost:*`.
-2. **Double-submit token**: `X-CSRF-Token` header debe coincidir con el valor de la cookie `sferaai_csrf` **Y** su hash debe coincidir con `frontend_sessions.csrf_token_hash`.
+2. **Double-submit token**: `X-CSRF-Token` header debe coincidir con el valor de la cookie `capsulecorp_csrf` **Y** su hash debe coincidir con `frontend_sessions.csrf_token_hash`.
 
 Fallos → `403 CSRF validation failed: <reason>`.
 
-Las peticiones con `X-API-Key` o bearer `sferaai_at_*` bypasean CSRF.
+Las peticiones con `X-API-Key` o bearer `capsulecorp_at_*` bypasean CSRF.
 
 ## Parámetros configurables
 

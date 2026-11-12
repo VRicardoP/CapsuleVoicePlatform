@@ -1,5 +1,5 @@
 """
-Transcription model - Maps to sferaai.sql transcriptions table.
+Transcription model - Maps to capsulecorp.sql transcriptions table.
 AI-generated transcriptions with compliance tracking.
 
 AI Act Art. 12: Full traceability of AI outputs

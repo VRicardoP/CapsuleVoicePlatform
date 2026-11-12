@@ -70,9 +70,9 @@ const ContactModal: React.FC<ContactModalProps> = ({ onClose, initialSubject = '
         {/* Company Info */}
         <div className="px-6 pt-6 pb-4 flex items-center gap-6">
           <img
-            src="/Logo.png"
-            alt="Sfera AI"
-            className="h-40 w-auto flex-shrink-0"
+            src="/icono.png"
+            alt="Capsule Corp"
+            className="h-24 w-auto flex-shrink-0"
           />
           <div className="text-white text-base font-bold leading-relaxed">
             <p>Carrer Isaac Albéniz 48</p>
@@ -165,7 +165,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ onClose, initialSubject = '
         {/* Footer */}
         <div className="p-4 border-t border-gray-700 bg-gray-900/50">
           <p className="text-xs text-gray-500 text-center">
-            Tu mensaje será enviado al equipo de Sfera AI
+            Tu mensaje será enviado al equipo de Capsule Corp
           </p>
         </div>
       </div>

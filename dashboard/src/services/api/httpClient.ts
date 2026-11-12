@@ -104,7 +104,7 @@ const CSRF_HEADER = 'X-CSRF-Token';
 /** Read the CSRF token cookie set by the backend on login. */
 export function readCsrfToken(): string | null {
   if (typeof document === 'undefined') return null;
-  const match = document.cookie.match(/(?:^|;\s*)sferaai_csrf=([^;]+)/);
+  const match = document.cookie.match(/(?:^|;\s*)capsulecorp_csrf=([^;]+)/);
   return match ? decodeURIComponent(match[1]) : null;
 }
 

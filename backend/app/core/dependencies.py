@@ -57,7 +57,7 @@ async def _resolve_api_token(
     bearer_value: str,
     request: Request | None = None,
 ) -> tuple[str, str | None] | None:
-    """Validate ``Bearer sferaai_at_*`` tokens against ``api_tokens``.
+    """Validate ``Bearer capsulecorp_at_*`` tokens against ``api_tokens``.
 
     If ``request`` is provided, populate ``request.state`` with:
     - ``auth_source = "api_token"``
@@ -108,7 +108,7 @@ async def get_current_user_id(
 
     Resolution order:
       1. BFFSessionMiddleware already populated ``request.state``? Use that.
-      2. ``Authorization: Bearer sferaai_at_*`` → API token table.
+      2. ``Authorization: Bearer capsulecorp_at_*`` → API token table.
       3. Legacy JWT in Authorization header or ``access_token`` cookie.
     """
     # 1. BFF cookie path (populated by BFFSessionMiddleware)
@@ -117,7 +117,7 @@ async def get_current_user_id(
         return state_user_id
 
     # 2. API token path
-    if credentials and credentials.credentials.startswith("sferaai_at_"):
+    if credentials and credentials.credentials.startswith("capsulecorp_at_"):
         resolved = await _resolve_api_token(db, credentials.credentials, request)
         if resolved:
             return resolved[0]
@@ -206,7 +206,7 @@ async def get_auth_context(
     # full user's RLS context. Endpoints that need RLS (those depending
     # on get_db_with_rls) will surface a clear 403 instead of silently
     # running with a fake token.
-    if credentials and credentials.credentials.startswith("sferaai_at_"):
+    if credentials and credentials.credentials.startswith("capsulecorp_at_"):
         if await _resolve_api_token(db, credentials.credentials, request):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
@@ -331,7 +331,7 @@ async def get_current_user_role(
     # "api_token" role blocks require_admin() / require_dpo() / etc. from
     # accepting API tokens for admin operations, which is the intended
     # principle of least privilege.
-    if credentials and credentials.credentials.startswith("sferaai_at_"):
+    if credentials and credentials.credentials.startswith("capsulecorp_at_"):
         resolved = await _resolve_api_token(db, credentials.credentials, request)
         if not resolved:
             return "none"
@@ -533,7 +533,7 @@ def require_recent_auth(max_age_seconds: int | None = None):
     - If the request is BFF-authenticated and ``recent_auth_at`` is
       within the window → pass.
     - If the request is BFF-authenticated but ``recent_auth_at`` is
-      stale → 401 with ``WWW-Authenticate: SferaAI re-auth-required``.
+      stale → 401 with ``WWW-Authenticate: CapsuleCorp re-auth-required``.
     - If the request is on the legacy JWT path → pass (the legacy flow
       has no concept of recent_auth, and we don't want to break the
       coexistence window). After Phase 1.5 retires legacy, this
@@ -547,7 +547,7 @@ def require_recent_auth(max_age_seconds: int | None = None):
         credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(security)] = None,
     ) -> None:
         # API tokens cannot satisfy recent-auth requirements; reject.
-        if credentials and credentials.credentials.startswith("sferaai_at_"):
+        if credentials and credentials.credentials.startswith("capsulecorp_at_"):
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="API tokens cannot perform sensitive operations",
@@ -566,7 +566,7 @@ def require_recent_auth(max_age_seconds: int | None = None):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Re-authentication required",
             headers={
-                "WWW-Authenticate": "SferaAI re-auth-required",
+                "WWW-Authenticate": "CapsuleCorp re-auth-required",
                 "X-Reauth-Code": "REAUTH_REQUIRED",
             },
         )

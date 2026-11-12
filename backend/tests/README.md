@@ -1,4 +1,4 @@
-# SferaAI - Tests
+# CapsuleCorp - Tests
 
 **Total:** 284 tests | **Failures:** 0
 **Última actualización:** 2026-02-17
@@ -57,7 +57,7 @@ PYTHONPATH=. python3 -m pytest tests/unit/ -v
 
 - PostgreSQL en puerto **5433** (configurado en `conftest.py` como `TEST_DATABASE_URL`)
 - Tablas `security_breaches` y `client_error_logs` creadas via SQL
-- Roles `sfera_ai_agent`, `sfera_app` con GRANTs apropiados
+- Roles `capsule_ai_agent`, `capsule_app` con GRANTs apropiados
 
 ---
 

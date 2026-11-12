@@ -19,7 +19,7 @@
 -- 55.7: Función register_employee_phone
 -- 55.8: Función deactivate_employee_phone
 -- 55.9: Integración con bloqueo de análisis emocional
--- Ejecutar: psql -U postgres -d sfera -f 55_test_employee_detection.sql
+-- Ejecutar: psql -U postgres -d capsule -f 55_test_employee_detection.sql
 -- ============================================================================
 
 -- Iniciar transacción para garantizar idempotencia

@@ -1,5 +1,5 @@
 """
-Data access repositories for SferaAI.
+Data access repositories for CapsuleCorp.
 All database operations go through repositories for:
 - Consistent query patterns
 - Audit trail integration

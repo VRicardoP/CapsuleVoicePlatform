@@ -114,7 +114,7 @@ class RecordingService:
 
             # Save to temp file
             fd, tmp_path = tempfile.mkstemp(
-                prefix=f"sferaai_rec_{ultravox_call_id[:8]}_", suffix=".wav"
+                prefix=f"capsulecorp_rec_{ultravox_call_id[:8]}_", suffix=".wav"
             )
             with os.fdopen(fd, "wb") as f:
                 f.write(response.content)
@@ -131,7 +131,7 @@ class RecordingService:
 
     async def _transcode_to_ogg(self, wav_path: str, call_id: str) -> str | None:
         """Transcode WAV to OGG Opus 32kbps mono using ffmpeg with low priority."""
-        fd, ogg_path = tempfile.mkstemp(prefix=f"sferaai_rec_{call_id[:8]}_", suffix=".ogg")
+        fd, ogg_path = tempfile.mkstemp(prefix=f"capsulecorp_rec_{call_id[:8]}_", suffix=".ogg")
         os.close(fd)
 
         try:

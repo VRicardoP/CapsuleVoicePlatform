@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 
 /**
  * Response shape for paginated API endpoints.
- * Most SferaAI list endpoints return { items: T[], total: number }.
+ * Most CapsuleCorp list endpoints return { items: T[], total: number }.
  */
 interface PaginatedResponse<T> {
   items: T[];

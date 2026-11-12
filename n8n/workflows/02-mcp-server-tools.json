@@ -1,10 +1,10 @@
 {
-  "name": "MCP Server - SferaAI Tools",
+  "name": "MCP Server - CapsuleCorp Tools",
   "nodes": [
     {
       "parameters": {
         "authentication": "bearerAuth",
-        "path": "sferaai-mcp-tools"
+        "path": "capsulecorp-mcp-tools"
       },
       "id": "mcp-trigger-001",
       "name": "MCP Server Trigger",
@@ -45,7 +45,7 @@
       "credentials": {
         "postgres": {
           "id": "POSTGRES_CREDENTIAL_ID",
-          "name": "SferaAI Postgres"
+          "name": "CapsuleCorp Postgres"
         }
       }
     },
@@ -64,7 +64,7 @@
       "credentials": {
         "postgres": {
           "id": "POSTGRES_CREDENTIAL_ID",
-          "name": "SferaAI Postgres"
+          "name": "CapsuleCorp Postgres"
         }
       }
     },
@@ -83,7 +83,7 @@
       "credentials": {
         "postgres": {
           "id": "POSTGRES_CREDENTIAL_ID",
-          "name": "SferaAI Postgres"
+          "name": "CapsuleCorp Postgres"
         }
       }
     },
@@ -102,7 +102,7 @@
       "credentials": {
         "postgres": {
           "id": "POSTGRES_CREDENTIAL_ID",
-          "name": "SferaAI Postgres"
+          "name": "CapsuleCorp Postgres"
         }
       }
     },
@@ -121,7 +121,7 @@
       "credentials": {
         "postgres": {
           "id": "POSTGRES_CREDENTIAL_ID",
-          "name": "SferaAI Postgres"
+          "name": "CapsuleCorp Postgres"
         }
       }
     },
@@ -140,7 +140,7 @@
       "credentials": {
         "postgres": {
           "id": "POSTGRES_CREDENTIAL_ID",
-          "name": "SferaAI Postgres"
+          "name": "CapsuleCorp Postgres"
         }
       }
     },

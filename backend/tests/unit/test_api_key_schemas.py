@@ -178,16 +178,16 @@ class TestAPIKeyCreateResponse:
     def test_valid_response(self):
         """Test valid response creation."""
         response = APIKeyCreateResponse(
-            api_key="sfera_ai_agent_abc123def456",
+            api_key="capsule_ai_agent_abc123def456",
             api_key_id="550e8400-e29b-41d4-a716-446655440000",
-            key_prefix="sfera_ai_agent_abc",
+            key_prefix="capsule_ai_agent_abc",
             client_type="ai_agent",
             service_name="Test Agent",
             service_id="test-agent-001",
             expires_at=None,
         )
 
-        assert response.api_key == "sfera_ai_agent_abc123def456"
+        assert response.api_key == "capsule_ai_agent_abc123def456"
         assert response.api_key_id == "550e8400-e29b-41d4-a716-446655440000"
         assert "will NOT be shown again" in response.message
 
@@ -196,9 +196,9 @@ class TestAPIKeyCreateResponse:
         expires = datetime(2025, 12, 31, 23, 59, 59, tzinfo=UTC)
 
         response = APIKeyCreateResponse(
-            api_key="sfera_external_xyz789",
+            api_key="capsule_external_xyz789",
             api_key_id="550e8400-e29b-41d4-a716-446655440001",
-            key_prefix="sfera_external_xyz",
+            key_prefix="capsule_external_xyz",
             client_type="external",
             service_name="Expiring Service",
             service_id="exp-service-001",
@@ -217,7 +217,7 @@ class TestAPIKeyInfo:
 
         info = APIKeyInfo(
             id="550e8400-e29b-41d4-a716-446655440000",
-            key_prefix="sfera_ai_agent_abc",
+            key_prefix="capsule_ai_agent_abc",
             client_type="ai_agent",
             service_name="Test Agent",
             service_id="test-001",
@@ -240,7 +240,7 @@ class TestAPIKeyInfo:
 
         info = APIKeyInfo(
             id="550e8400-e29b-41d4-a716-446655440000",
-            key_prefix="sfera_pbx_xyz",
+            key_prefix="capsule_pbx_xyz",
             client_type="pbx",
             service_name="Active PBX",
             is_active=True,
@@ -361,25 +361,25 @@ class TestAPIKeyProvisionResponse:
     def test_valid_provision_response(self):
         """Test valid provision response."""
         response = APIKeyProvisionResponse(
-            api_key="sfera_ai_agent_provisionedkey123",
+            api_key="capsule_ai_agent_provisionedkey123",
             api_key_id="550e8400-e29b-41d4-a716-446655440000",
-            key_prefix="sfera_ai_agent_pro",
+            key_prefix="capsule_ai_agent_pro",
             client_type="ai_agent",
             service_name="Provisioned Service",
             service_id="prov-service-001",
             expires_at=None,
         )
 
-        assert response.api_key == "sfera_ai_agent_provisionedkey123"
+        assert response.api_key == "capsule_ai_agent_provisionedkey123"
         assert "provisioned successfully" in response.message.lower()
         assert "NOT be shown again" in response.message
 
     def test_provision_response_message_warning(self):
         """Test that provision response has security warning."""
         response = APIKeyProvisionResponse(
-            api_key="sfera_pbx_test123",
+            api_key="capsule_pbx_test123",
             api_key_id="550e8400-e29b-41d4-a716-446655440000",
-            key_prefix="sfera_pbx_test1",
+            key_prefix="capsule_pbx_test1",
             client_type="pbx",
             service_name="Test PBX",
             service_id="pbx-001",

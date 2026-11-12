@@ -3,7 +3,7 @@
 Pipeline (order matters):
 1. Skip excluded paths (auth/login, webhooks, marketplace, health…).
 2. Resolve the active session:
-   a. If ``__Host-sferaai_session`` (or ``sferaai_session`` in dev) is
+   a. If ``__Host-capsulecorp_session`` (or ``capsulecorp_session`` in dev) is
       present and valid → use BFF, populate ``request.state``.
    b. Else if a legacy ``access_token`` cookie is present and valid AND
       ``bff_legacy_cookie_compat`` is enabled → auto-upgrade to BFF and
@@ -13,7 +13,7 @@ Pipeline (order matters):
 3. Validate CSRF (Origin/Referer + double-submit token) for mutator
    methods on cookie-authenticated requests. NOT applied when the
    request is authenticated via API key (``X-API-Key`` header) or bearer
-   ``sferaai_at_*`` token — those are not CSRF-vulnerable.
+   ``capsulecorp_at_*`` token — those are not CSRF-vulnerable.
 4. Throttled sliding-window update of ``last_seen_at``.
 """
 
@@ -203,7 +203,7 @@ class BFFSessionMiddleware(BaseHTTPMiddleware):
         if request.headers.get("x-api-key"):
             return await call_next(request)
         authz = request.headers.get("authorization") or ""
-        if authz.lower().startswith("bearer sferaai_at_"):
+        if authz.lower().startswith("bearer capsulecorp_at_"):
             return await call_next(request)
 
         # Pre-allocate the response cookie queue so legacy upgrade can

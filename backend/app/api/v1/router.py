@@ -84,14 +84,14 @@ api_router.include_router(
     tags=["GDPR Rights"],
 )
 
-# AI Agent endpoints (API Key required - sfera_ai_agent)
+# AI Agent endpoints (API Key required - capsule_ai_agent)
 api_router.include_router(
     ai_agent.router,
     prefix="/ai",
     tags=["AI Agent"],
 )
 
-# PBX/CTI endpoints (API Key required - sfera_pbx)
+# PBX/CTI endpoints (API Key required - capsule_pbx)
 api_router.include_router(
     pbx.router,
     prefix="/pbx",

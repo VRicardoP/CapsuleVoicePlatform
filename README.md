@@ -1,4 +1,4 @@
-# SferaAI — Portfolio Showcase
+# CapsuleCorp — Portfolio Showcase
 
 Extracción sanitizada de una plataforma SaaS multi-tenant en producción que diseñé y
 mantengo para varios clientes reales (sector salud/estética, inmobiliario, viajes,

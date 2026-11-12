@@ -13,7 +13,7 @@
 -- ============================================================================
 -- Verifica que existe documentación técnica completa de sistemas AI según
 -- Anexo IV del AI Act
--- Ejecutar: psql -U postgres -d sfera -f 39_test_ai_technical_docs.sql
+-- Ejecutar: psql -U postgres -d capsule -f 39_test_ai_technical_docs.sql
 -- ============================================================================
 
 BEGIN;

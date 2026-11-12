@@ -1,5 +1,5 @@
 """
-Consent models - Maps to sferaai.sql consent tables.
+Consent models - Maps to capsulecorp.sql consent tables.
 Critical for RGPD Art. 6, 7 and LOPDGDD Art. 6 compliance.
 """
 
@@ -32,7 +32,7 @@ if TYPE_CHECKING:
 class DataProcessingPurpose(Base):
     """
     Processing purposes with legal basis.
-    Maps to sferaai.sql line 710.
+    Maps to capsulecorp.sql line 710.
 
     RGPD Art. 13: Purposes must be documented with legal basis.
     """
@@ -71,7 +71,7 @@ class DataProcessingPurpose(Base):
 class ConsentVersion(Base):
     """
     Consent text versions for traceability.
-    Maps to sferaai.sql line 770.
+    Maps to capsulecorp.sql line 770.
 
     Each consent must reference a specific version of the legal text.
     UNIQUE(purpose_id, version).
@@ -284,7 +284,7 @@ class DataConsent(Base):
 class ContactConsent(Base):
     """
     Junction table linking contacts to data_consents.
-    Maps to sferaai.sql line 1138.
+    Maps to capsulecorp.sql line 1138.
 
     This is NOT a standalone consent table — it links a contact
     to their DataConsent record via consent_id FK.
@@ -324,7 +324,7 @@ class ContactConsent(Base):
 class CallProcessingConsent(Base):
     """
     Links a call to a specific consent + processing purpose.
-    Maps to sferaai.sql line 1330.
+    Maps to capsulecorp.sql line 1330.
 
     RGPD Art. 5.1.b: Purpose limitation — each call processing
     must reference a specific consent and purpose.

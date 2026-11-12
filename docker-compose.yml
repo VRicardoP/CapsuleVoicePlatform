@@ -1,5 +1,5 @@
 # =============================================================================
-# SferaAI - Docker Compose
+# CapsuleCorp - Docker Compose
 # =============================================================================
 # Five containers: PostgreSQL, Redis, Backend (FastAPI), Worker (ARQ),
 #                  Frontend (React + Nginx)
@@ -11,26 +11,26 @@ services:
   # ---------------------------------------------------------------------------
   postgres:
     image: postgres:16-alpine
-    container_name: sferaai-postgres
+    container_name: capsulecorp-postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Database password required}
-      POSTGRES_DB: ${POSTGRES_DB:-sfera}
+      POSTGRES_DB: ${POSTGRES_DB:-capsule}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./sferaai.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./capsulecorp.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     networks:
-      - sferaai-network
+      - capsulecorp-network
     deploy:
       resources:
         limits:
           memory: 512M
           cpus: "1.0"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-sfera}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-capsule}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -41,7 +41,7 @@ services:
   # ---------------------------------------------------------------------------
   redis:
     image: redis:7-alpine
-    container_name: sferaai-redis
+    container_name: capsulecorp-redis
     restart: unless-stopped
     command: ["redis-server", "--maxmemory", "128mb", "--maxmemory-policy", "allkeys-lru"]
     volumes:
@@ -49,7 +49,7 @@ services:
     ports:
       - "${REDIS_PORT:-6379}:6379"
     networks:
-      - sferaai-network
+      - capsulecorp-network
     deploy:
       resources:
         limits:
@@ -68,7 +68,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: sferaai-backend
+    container_name: capsulecorp-backend
     restart: unless-stopped
     environment:
       - ENVIRONMENT=${ENVIRONMENT:-development}
@@ -77,7 +77,7 @@ services:
       - POSTGRES_PORT=5432
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?Database password required}
-      - POSTGRES_DB=${POSTGRES_DB:-sfera}
+      - POSTGRES_DB=${POSTGRES_DB:-capsule}
       - SECRET_KEY=${SECRET_KEY:?Secret key required}
       - KMS_MASTER_KEY=${KMS_MASTER_KEY:?KMS master key required}
       - AUDIT_HMAC_KEY=${AUDIT_HMAC_KEY:?Audit HMAC key required}
@@ -92,17 +92,17 @@ services:
       - RECORDING_ENCRYPTION_KEY=${RECORDING_ENCRYPTION_KEY:-}
       - RECORDING_CLIENT_ID=${RECORDING_CLIENT_ID:-default}
       - RECORDING_RETENTION_DAYS=${RECORDING_RETENTION_DAYS:-3}
-      - RECORDINGS_BASE_PATH=/opt/sferaai/data/recordings
+      - RECORDINGS_BASE_PATH=/opt/capsulecorp/data/recordings
       - WHATSAPP_WEBHOOK_VERIFY_TOKEN=${WHATSAPP_WEBHOOK_VERIFY_TOKEN:-}
       - WHATSAPP_APP_SECRET=${WHATSAPP_APP_SECRET:-}
       - REDIS_URL=redis://redis:6379
     volumes:
-      - ./data/recordings:/opt/sferaai/data/recordings
-      - ./infraestructura/shared/marketplace.json:/opt/sferaai/marketplace.json:ro
+      - ./data/recordings:/opt/capsulecorp/data/recordings
+      - ./infraestructura/shared/marketplace.json:/opt/capsulecorp/marketplace.json:ro
     ports:
       - "${BACKEND_PORT:-8000}:8000"
     networks:
-      - sferaai-network
+      - capsulecorp-network
     depends_on:
       postgres:
         condition: service_healthy
@@ -127,7 +127,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: sferaai-worker
+    container_name: capsulecorp-worker
     restart: unless-stopped
     command: ["python", "-m", "arq", "app.worker.WorkerSettings"]
     environment:
@@ -137,7 +137,7 @@ services:
       - POSTGRES_PORT=5432
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?Database password required}
-      - POSTGRES_DB=${POSTGRES_DB:-sfera}
+      - POSTGRES_DB=${POSTGRES_DB:-capsule}
       - SECRET_KEY=${SECRET_KEY:?Secret key required}
       - KMS_MASTER_KEY=${KMS_MASTER_KEY:?KMS master key required}
       - AUDIT_HMAC_KEY=${AUDIT_HMAC_KEY:?Audit HMAC key required}
@@ -148,11 +148,11 @@ services:
       - RECORDING_ENABLED=${RECORDING_ENABLED:-true}
       - RECORDING_ENCRYPTION_KEY=${RECORDING_ENCRYPTION_KEY:-}
       - RECORDING_CLIENT_ID=${RECORDING_CLIENT_ID:-default}
-      - RECORDINGS_BASE_PATH=/opt/sferaai/data/recordings
+      - RECORDINGS_BASE_PATH=/opt/capsulecorp/data/recordings
     volumes:
-      - ./data/recordings:/opt/sferaai/data/recordings
+      - ./data/recordings:/opt/capsulecorp/data/recordings
     networks:
-      - sferaai-network
+      - capsulecorp-network
     depends_on:
       redis:
         condition: service_healthy
@@ -173,12 +173,12 @@ services:
       dockerfile: Dockerfile
       args:
         - VITE_API_URL=${VITE_API_URL:-http://localhost:8000}
-    container_name: sferaai-frontend
+    container_name: capsulecorp-frontend
     restart: unless-stopped
     ports:
       - "${FRONTEND_PORT:-80}:80"
     networks:
-      - sferaai-network
+      - capsulecorp-network
     deploy:
       resources:
         limits:
@@ -197,15 +197,15 @@ services:
 # Networks
 # -----------------------------------------------------------------------------
 networks:
-  sferaai-network:
+  capsulecorp-network:
     driver: bridge
-    name: sferaai-network
+    name: capsulecorp-network
 
 # -----------------------------------------------------------------------------
 # Volumes
 # -----------------------------------------------------------------------------
 volumes:
   postgres_data:
-    name: sferaai-postgres-data
+    name: capsulecorp-postgres-data
   redis_data:
-    name: sferaai-redis-data
+    name: capsulecorp-redis-data

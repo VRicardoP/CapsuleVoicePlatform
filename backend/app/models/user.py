@@ -1,5 +1,5 @@
 """
-User model - Maps to sferaai.sql users table.
+User model - Maps to capsulecorp.sql users table.
 RGPD Art. 32: Encrypted PII fields.
 """
 
@@ -23,7 +23,7 @@ class User(Base, TimestampMixin, SoftDeleteMixin):
     """
     User model for internal system users (agents, supervisors, admins).
 
-    Maps to the users table in sferaai.sql schema.
+    Maps to the users table in capsulecorp.sql schema.
 
     Compliance:
     - RGPD Art. 32: Encryption at rest

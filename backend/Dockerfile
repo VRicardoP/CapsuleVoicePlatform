@@ -1,5 +1,5 @@
 # =============================================================================
-# SferaAI Backend - Dockerfile
+# CapsuleCorp Backend - Dockerfile
 # =============================================================================
 # Simplified build for production
 # =============================================================================
@@ -7,7 +7,7 @@
 FROM python:3.12-slim
 
 # Create non-root user
-RUN groupadd -r sferaai && useradd -r -g sferaai sferaai
+RUN groupadd -r capsulecorp && useradd -r -g capsulecorp capsulecorp
 
 WORKDIR /app
 
@@ -42,13 +42,13 @@ ENV PLAYWRIGHT_BROWSERS_PATH=/opt/playwright-browsers
 RUN playwright install --with-deps chromium
 
 # Copy application code
-COPY --chown=sferaai:sferaai app ./app
-COPY --chown=sferaai:sferaai scripts ./scripts
-COPY --chown=sferaai:sferaai alembic ./alembic
-COPY --chown=sferaai:sferaai alembic.ini ./alembic.ini
+COPY --chown=capsulecorp:capsulecorp app ./app
+COPY --chown=capsulecorp:capsulecorp scripts ./scripts
+COPY --chown=capsulecorp:capsulecorp alembic ./alembic
+COPY --chown=capsulecorp:capsulecorp alembic.ini ./alembic.ini
 
 # Switch to non-root user
-USER sferaai
+USER capsulecorp
 
 # Expose port
 EXPOSE 8000

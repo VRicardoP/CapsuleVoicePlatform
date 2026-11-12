@@ -149,7 +149,7 @@ async def test_webhook(
     test_payload = {
         "event": "test",
         "timestamp": datetime.now(UTC).isoformat(),
-        "data": {"message": "Test webhook from SferaAI"},
+        "data": {"message": "Test webhook from CapsuleCorp"},
     }
     try:
         client = http_clients.whatsapp_client

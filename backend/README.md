@@ -1,4 +1,4 @@
-# SferaAI Backend API
+# CapsuleCorp Backend API
 
 API REST para el sistema de Call Center con IA, con cumplimiento legal completo de RGPD, LOPDGDD, AI Act y NIS2.
 
@@ -91,7 +91,7 @@ El sistema soporta **tres tipos de clientes** con diferentes patrones de acceso:
 │  ├────────────────┤   ├────────────────────┤   ├────────────────────────┤ │
 │  │ 90% LECTURA    │   │ 70% ESCRITURA      │   │ 80% ESCRITURA          │ │
 │  │ Auth: JWT      │   │ Auth: API Key      │   │ Auth: API Key + IP     │ │
-│  │ Rol: sfera_app │   │ Rol: sfera_ai_agent│   │ Rol: sfera_pbx         │ │
+│  │ Rol: capsule_app │   │ Rol: capsule_ai_agent│   │ Rol: capsule_pbx         │ │
 │  └───────┬────────┘   └─────────┬──────────┘   └───────────┬────────────┘ │
 │          │                      │                          │              │
 │          └──────────────────────┼──────────────────────────┘              │
@@ -110,9 +110,9 @@ El sistema soporta **tres tipos de clientes** con diferentes patrones de acceso:
 
 | Cliente | Autenticación | Rol PostgreSQL | Rate Limit |
 |---------|---------------|----------------|------------|
-| Frontend | JWT (usuario) | `sfera_app` | 100 req/min |
-| Agente IA | API Key | `sfera_ai_agent` | 1000 req/min |
-| Centralita | API Key + IP whitelist | `sfera_pbx` | 500 req/min |
+| Frontend | JWT (usuario) | `capsule_app` | 100 req/min |
+| Agente IA | API Key | `capsule_ai_agent` | 1000 req/min |
+| Centralita | API Key + IP whitelist | `capsule_pbx` | 500 req/min |
 
 Ver [docs/ARCHITECTURE_MULTICLIENTE.md](docs/ARCHITECTURE_MULTICLIENTE.md) para detalles completos.
 
@@ -121,7 +121,7 @@ Ver [docs/ARCHITECTURE_MULTICLIENTE.md](docs/ARCHITECTURE_MULTICLIENTE.md) para 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                        Docker Network                            │
-│                      (sferaai-network)                          │
+│                      (capsulecorp-network)                          │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                  │
 │  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐       │
@@ -273,7 +273,7 @@ Ver [docs/ARCHITECTURE_MULTICLIENTE.md](docs/ARCHITECTURE_MULTICLIENTE.md) para 
 ### Row Level Security (RGPD Art. 25, Art. 32)
 
 PostgreSQL RLS habilitado con `FORCE` en todas las tablas con PII:
-- Backend usa rol `sfera_app` (limitado)
+- Backend usa rol `capsule_app` (limitado)
 - Incluso postgres no puede bypasear RLS
 - Políticas basadas en `get_current_user()` que valida contra `secure_sessions`
 
@@ -378,7 +378,7 @@ INSERT INTO encryption_keys (
 ### Docker Compose
 
 ```bash
-# Desde la raíz del proyecto (SferaAI/)
+# Desde la raíz del proyecto (CapsuleCorp/)
 cp .env.example .env
 # Editar .env
 
@@ -399,9 +399,9 @@ curl http://localhost:8000/health/security
 | `DEBUG` | Modo debug | `true`, `false` |
 | `POSTGRES_HOST` | Host de PostgreSQL | `localhost`, `postgres` |
 | `POSTGRES_PORT` | Puerto de PostgreSQL | `5432` |
-| `POSTGRES_USER` | Usuario de PostgreSQL | `sfera_app` |
+| `POSTGRES_USER` | Usuario de PostgreSQL | `capsule_app` |
 | `POSTGRES_PASSWORD` | Contraseña de PostgreSQL | `***` |
-| `POSTGRES_DB` | Base de datos | `sfera` |
+| `POSTGRES_DB` | Base de datos | `capsule` |
 | `SECRET_KEY` | Clave para JWT | `token_urlsafe(32)` |
 | `ACCESS_TOKEN_EXPIRE_MINUTES` | Expiración token acceso | `30` |
 | `CORS_ORIGINS` | Orígenes permitidos | `["http://localhost:3000"]` |
@@ -412,7 +412,7 @@ curl http://localhost:8000/health/security
 | `SMTP_PASSWORD` | Contraseña SMTP | `***` |
 | `SMTP_TLS` | Usar TLS | `true` |
 | `SMTP_FROM_EMAIL` | Email remitente | `noreply@yourdomain.com` |
-| `SMTP_FROM_NAME` | Nombre remitente | `Sfera AI Dashboard` |
+| `SMTP_FROM_NAME` | Nombre remitente | `Capsule Corp Dashboard` |
 | `CONTACT_EMAIL` | Email destino contacto | `avisos@yourdomain.com` |
 
 **Nota:** `KMS_MASTER_KEY` y `AUDIT_HMAC_KEY` NO se configuran aquí. Están en `secure_keys` de PostgreSQL.
@@ -425,7 +425,7 @@ curl http://localhost:8000/health/security
 
 | Método | Endpoint | Descripción |
 |--------|----------|-------------|
-| POST | `/api/v1/auth/login` | Iniciar sesión — setea cookie `__Host-sferaai_session` |
+| POST | `/api/v1/auth/login` | Iniciar sesión — setea cookie `__Host-capsulecorp_session` |
 | POST | `/api/v1/auth/refresh` | Shim 204 (BFF auto-refresca) |
 | POST | `/api/v1/auth/logout` | Revoca sesión y borra cookie |
 | GET | `/api/v1/auth/sessions` | Listar sesiones activas del usuario |
@@ -439,7 +439,7 @@ curl http://localhost:8000/health/security
 
 | Método | Endpoint | Auth | Descripción |
 |--------|----------|------|-------------|
-| POST | `/api/v1/auth/api-token` | BFF admin + require_recent_auth | Emitir token `sferaai_at_*` con scope acotado |
+| POST | `/api/v1/auth/api-token` | BFF admin + require_recent_auth | Emitir token `capsulecorp_at_*` con scope acotado |
 | GET | `/api/v1/auth/api-tokens` | BFF | Listar tokens propios (sin valor) |
 | DELETE | `/api/v1/auth/api-tokens/{id}` | BFF + require_recent_auth | Revocar token |
 
@@ -474,7 +474,7 @@ curl -X POST /api/v1/auth/provision-api-key \
 **Uso de API Key:**
 ```bash
 curl -X POST /api/v1/calls \
-  -H "X-API-Key: sfera_ai_agent_..." \
+  -H "X-API-Key: capsule_ai_agent_..." \
   -H "Content-Type: application/json" \
   -d '{"direction": "inbound", "status": "initiated"}'
 ```
@@ -724,7 +724,7 @@ MIT License - Ver archivo LICENSE en la raíz del proyecto.
 
 ---
 
-*SferaAI Backend v1.3.0 - Febrero 2026*
+*CapsuleCorp Backend v1.3.0 - Febrero 2026*
 *Última actualización: 2026-02-17*
 *Estado: 284 tests passing, breach detection activo, despliegue producción*
 *Features: API Keys, SMTP, PDF AEPD, Grabaciones (Fernet), WhatsApp, Marketplace, Breach Detection*

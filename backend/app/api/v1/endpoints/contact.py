@@ -117,7 +117,7 @@ async def send_contact_email(
     email_subject = f"[Contacto Dashboard] {contact_data.subject}"
 
     body_text = f"""
-Nuevo mensaje de contacto desde el Dashboard de Sfera AI
+Nuevo mensaje de contacto desde el Dashboard de Capsule Corp
 
 De: {user_name}
 Email: {user_email}
@@ -151,7 +151,7 @@ Este mensaje fue enviado desde el formulario de contacto del Dashboard.
     <div class="container">
         <div class="header">
             <h2 style="margin: 0;">Nuevo mensaje de contacto</h2>
-            <p style="margin: 5px 0 0 0; opacity: 0.9;">Dashboard Sfera AI</p>
+            <p style="margin: 5px 0 0 0; opacity: 0.9;">Dashboard Capsule Corp</p>
         </div>
         <div class="content">
             <div class="info-row">
@@ -172,7 +172,7 @@ Este mensaje fue enviado desde el formulario de contacto del Dashboard.
             </div>
         </div>
         <div class="footer">
-            Este mensaje fue enviado desde el formulario de contacto del Dashboard de Sfera AI
+            Este mensaje fue enviado desde el formulario de contacto del Dashboard de Capsule Corp
         </div>
     </div>
 </body>

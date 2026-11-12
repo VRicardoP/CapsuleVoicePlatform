@@ -1,8 +1,8 @@
-# Arquitectura Multi-Cliente SferaAI
+# Arquitectura Multi-Cliente CapsuleCorp
 
 ## Visión General
 
-El sistema SferaAI tiene **tres tipos de clientes** que interactúan con la API, cada uno con diferentes patrones de acceso y requisitos de seguridad:
+El sistema CapsuleCorp tiene **tres tipos de clientes** que interactúan con la API, cada uno con diferentes patrones de acceso y requisitos de seguridad:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
@@ -134,9 +134,9 @@ POST /api/v1/pbx/calls/{id}/consent          # Registrar consentimiento verbal
 
 | Cliente | Método Primario | Método Secundario | Rol PostgreSQL |
 |---------|-----------------|-------------------|----------------|
-| Frontend | JWT (usuario) | - | `sfera_app` |
-| Agente IA | API Key | mTLS (opcional) | `sfera_ai_agent` |
-| Centralita | API Key | IP Whitelist | `sfera_pbx` |
+| Frontend | JWT (usuario) | - | `capsule_app` |
+| Agente IA | API Key | mTLS (opcional) | `capsule_ai_agent` |
+| Centralita | API Key | IP Whitelist | `capsule_pbx` |
 
 ### Flujo de Autenticación - Frontend (Usuario)
 
@@ -195,48 +195,48 @@ POST /api/v1/pbx/calls/{id}/consent          # Registrar consentimiento verbal
 
 ```sql
 -- Aplicación web (frontend)
-sfera_app          -- SELECT, INSERT, UPDATE (limitado)
+capsule_app          -- SELECT, INSERT, UPDATE (limitado)
 
 -- Solo lectura (reportes)
-sfera_readonly     -- SELECT only
+capsule_readonly     -- SELECT only
 
 -- Auditor/DPO
-sfera_auditor      -- SELECT en audit_log, blocked_data
+capsule_auditor      -- SELECT en audit_log, blocked_data
 
 -- Operaciones privilegiadas
-sfera_ops          -- Rotación de claves, mantenimiento
+capsule_ops          -- Rotación de claves, mantenimiento
 
 -- Gestor de sesiones
-sfera_session_manager  -- Solo set_current_user()
+capsule_session_manager  -- Solo set_current_user()
 
 -- Autoridades judiciales (LOPDGDD Art. 33)
-sfera_judicial_authority  -- Acceso a blocked_data
+capsule_judicial_authority  -- Acceso a blocked_data
 ```
 
 ### Roles Nuevos Necesarios
 
 ```sql
 -- Agente IA conversacional
-CREATE ROLE sfera_ai_agent WITH LOGIN;
-COMMENT ON ROLE sfera_ai_agent IS 'Agente IA: escritura intensiva en transcripciones, decisiones IA';
+CREATE ROLE capsule_ai_agent WITH LOGIN;
+COMMENT ON ROLE capsule_ai_agent IS 'Agente IA: escritura intensiva en transcripciones, decisiones IA';
 
 -- Permisos específicos
-GRANT SELECT ON customers, contacts, calls, consents TO sfera_ai_agent;
-GRANT INSERT ON transcriptions, ai_decision_logs TO sfera_ai_agent;
-GRANT UPDATE ON calls (sentiment, sentiment_score, ai_summary) TO sfera_ai_agent;
-GRANT EXECUTE ON FUNCTION log_ai_decision TO sfera_ai_agent;
-GRANT EXECUTE ON FUNCTION check_consent_for_sentiment TO sfera_ai_agent;
+GRANT SELECT ON customers, contacts, calls, consents TO capsule_ai_agent;
+GRANT INSERT ON transcriptions, ai_decision_logs TO capsule_ai_agent;
+GRANT UPDATE ON calls (sentiment, sentiment_score, ai_summary) TO capsule_ai_agent;
+GRANT EXECUTE ON FUNCTION log_ai_decision TO capsule_ai_agent;
+GRANT EXECUTE ON FUNCTION check_consent_for_sentiment TO capsule_ai_agent;
 
 -- Aplicaciones de centralita (PBX, CTI)
-CREATE ROLE sfera_pbx WITH LOGIN;
-COMMENT ON ROLE sfera_pbx IS 'Centralita: gestión ciclo de vida llamadas';
+CREATE ROLE capsule_pbx WITH LOGIN;
+COMMENT ON ROLE capsule_pbx IS 'Centralita: gestión ciclo de vida llamadas';
 
 -- Permisos específicos
-GRANT SELECT ON customers, contacts, robinson_checks TO sfera_pbx;
-GRANT INSERT ON calls, call_recordings, consents TO sfera_pbx;
-GRANT UPDATE ON calls (status, end_time, duration) TO sfera_pbx;
-GRANT EXECUTE ON FUNCTION check_robinson_list TO sfera_pbx;
-GRANT EXECUTE ON FUNCTION register_ai_disclosure TO sfera_pbx;
+GRANT SELECT ON customers, contacts, robinson_checks TO capsule_pbx;
+GRANT INSERT ON calls, call_recordings, consents TO capsule_pbx;
+GRANT UPDATE ON calls (status, end_time, duration) TO capsule_pbx;
+GRANT EXECUTE ON FUNCTION check_robinson_list TO capsule_pbx;
+GRANT EXECUTE ON FUNCTION register_ai_disclosure TO capsule_pbx;
 ```
 
 ---
@@ -390,11 +390,11 @@ async def create_call(call_data: CallCreate, db: AsyncSession):
 ### Estructura de API Key
 
 ```
-sfera_{client_type}_{random_32_chars}
+capsule_{client_type}_{random_32_chars}
 
 Ejemplos:
-- sfera_ai_a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6
-- sfera_pbx_q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2
+- capsule_ai_a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6
+- capsule_pbx_q7r8s9t0u1v2w3x4y5z6a7b8c9d0e1f2
 ```
 
 ### Tabla de API Keys
@@ -496,44 +496,44 @@ CREATE INDEX idx_api_keys_hash ON api_keys(key_hash) WHERE is_active = true;
 
 ## Estado de Implementación
 
-### Completado en `sferaai.sql` (líneas 13445-13961)
+### Completado en `capsulecorp.sql` (líneas 13445-13961)
 
 #### 1. Roles Multi-Cliente
 
 ```sql
 -- Rol para Agente IA (líneas 13471-13507)
-CREATE ROLE sfera_ai_agent WITH LOGIN;
+CREATE ROLE capsule_ai_agent WITH LOGIN;
 
 -- Permisos:
-GRANT SELECT ON contacts, calls, data_consents, call_processing_consents, contact_consents TO sfera_ai_agent;
-GRANT INSERT ON transcriptions, ai_decision_logs TO sfera_ai_agent;
-GRANT UPDATE ON calls TO sfera_ai_agent;
-GRANT EXECUTE ON FUNCTION encrypt_pii_with_metadata(TEXT) TO sfera_ai_agent;
+GRANT SELECT ON contacts, calls, data_consents, call_processing_consents, contact_consents TO capsule_ai_agent;
+GRANT INSERT ON transcriptions, ai_decision_logs TO capsule_ai_agent;
+GRANT UPDATE ON calls TO capsule_ai_agent;
+GRANT EXECUTE ON FUNCTION encrypt_pii_with_metadata(TEXT) TO capsule_ai_agent;
 
 -- Rol para PBX/Centralita (líneas 13517-13549)
-CREATE ROLE sfera_pbx WITH LOGIN;
+CREATE ROLE capsule_pbx WITH LOGIN;
 
 -- Permisos:
-GRANT SELECT ON contacts, robinson_checks, calls, data_consents, call_processing_consents, contact_consents TO sfera_pbx;
-GRANT INSERT ON calls, data_consents, call_processing_consents, robinson_checks TO sfera_pbx;
-GRANT UPDATE ON calls TO sfera_pbx;
-GRANT EXECUTE ON FUNCTION encrypt_pii_with_metadata(TEXT) TO sfera_pbx;
+GRANT SELECT ON contacts, robinson_checks, calls, data_consents, call_processing_consents, contact_consents TO capsule_pbx;
+GRANT INSERT ON calls, data_consents, call_processing_consents, robinson_checks TO capsule_pbx;
+GRANT UPDATE ON calls TO capsule_pbx;
+GRANT EXECUTE ON FUNCTION encrypt_pii_with_metadata(TEXT) TO capsule_pbx;
 ```
 
 #### 2. Seguridad (líneas 13551-13596)
 
 ```sql
 -- Revocar acceso a tablas sensibles
-REVOKE ALL ON secure_sessions, secure_keys, blocked_data, users FROM sfera_ai_agent;
-REVOKE ALL ON secure_sessions, secure_keys, blocked_data, users FROM sfera_pbx;
+REVOKE ALL ON secure_sessions, secure_keys, blocked_data, users FROM capsule_ai_agent;
+REVOKE ALL ON secure_sessions, secure_keys, blocked_data, users FROM capsule_pbx;
 
--- sfera_pbx NO puede escribir transcripciones ni decisiones IA
-REVOKE ALL ON transcriptions, ai_decision_logs FROM sfera_pbx;
+-- capsule_pbx NO puede escribir transcripciones ni decisiones IA
+REVOKE ALL ON transcriptions, ai_decision_logs FROM capsule_pbx;
 
 -- Revocar funciones críticas de cifrado
-REVOKE EXECUTE ON FUNCTION rotate_encryption_key(VARCHAR) FROM sfera_ai_agent, sfera_pbx;
-REVOKE EXECUTE ON FUNCTION re_encrypt_all_pii(...) FROM sfera_ai_agent, sfera_pbx;
-REVOKE EXECUTE ON FUNCTION get_secure_key(TEXT) FROM sfera_ai_agent, sfera_pbx;
+REVOKE EXECUTE ON FUNCTION rotate_encryption_key(VARCHAR) FROM capsule_ai_agent, capsule_pbx;
+REVOKE EXECUTE ON FUNCTION re_encrypt_all_pii(...) FROM capsule_ai_agent, capsule_pbx;
+REVOKE EXECUTE ON FUNCTION get_secure_key(TEXT) FROM capsule_ai_agent, capsule_pbx;
 ```
 
 #### 3. Tabla `api_keys` (líneas 13606-13662)
@@ -599,8 +599,8 @@ CREATE TABLE client_error_logs (
 );
 
 -- Permisos
-GRANT INSERT ON client_error_logs TO sfera_ai_agent;
-GRANT SELECT, UPDATE ON client_error_logs TO sfera_app;
+GRANT INSERT ON client_error_logs TO capsule_ai_agent;
+GRANT SELECT, UPDATE ON client_error_logs TO capsule_app;
 ```
 
 **Endpoints asociados:**
@@ -614,7 +614,7 @@ GRANT SELECT, UPDATE ON client_error_logs TO sfera_app;
 
 | Función | Descripción | Acceso |
 |---------|-------------|--------|
-| `validate_api_key(key, ip)` | Valida API key, devuelve info servicio + rate limit | `sfera_app` |
+| `validate_api_key(key, ip)` | Valida API key, devuelve info servicio + rate limit | `capsule_app` |
 | `create_api_key(type, name, ...)` | Crea nueva API key (devuelve texto plano UNA VEZ) | Solo `postgres` |
 | `revoke_api_key(id, reason)` | Revoca API key existente | Solo `postgres` |
 
@@ -623,13 +623,13 @@ GRANT SELECT, UPDATE ON client_error_logs TO sfera_app;
 ```sql
 -- Crear API key para agente IA
 SELECT * FROM create_api_key('ai_agent', 'AI Agent Principal', 'ai-agent-1');
--- Resultado: sfera_ai_agent_3e9d5e6570dd8fbc2b6a631ad7bcbccd (guardar inmediatamente)
+-- Resultado: capsule_ai_agent_3e9d5e6570dd8fbc2b6a631ad7bcbccd (guardar inmediatamente)
 
 -- Crear API key para PBX con IP whitelist
 SELECT * FROM create_api_key('pbx', 'Asterisk PBX', 'pbx-main', NULL, ARRAY['10.0.0.0/8'::INET]);
 
 -- Validar API key
-SELECT * FROM validate_api_key('sfera_ai_agent_3e9d5e6570dd8fbc2b6a631ad7bcbccd', '192.168.1.100');
+SELECT * FROM validate_api_key('capsule_ai_agent_3e9d5e6570dd8fbc2b6a631ad7bcbccd', '192.168.1.100');
 -- Resultado: is_valid=true, client_type=ai_agent, rate_limit=1000
 ```
 

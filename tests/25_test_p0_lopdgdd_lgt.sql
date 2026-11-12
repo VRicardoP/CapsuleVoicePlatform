@@ -16,7 +16,7 @@
 -- - blocked_data (LOPDGDD Art. 33 - Bloqueo antes de supresión)
 -- - call_traffic_data (LGT Art. 68.3 / Ley 25/2007 - Retención 12 meses)
 -- - Funciones de bloqueo y destrucción automática
--- Ejecutar: psql -U postgres -d sfera -f 25_test_p0_lopdgdd_lgt.sql
+-- Ejecutar: psql -U postgres -d capsule -f 25_test_p0_lopdgdd_lgt.sql
 -- ============================================================================
 
 -- Iniciar transacción para garantizar idempotencia

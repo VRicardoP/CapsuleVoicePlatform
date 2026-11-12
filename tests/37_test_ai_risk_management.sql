@@ -15,7 +15,7 @@
 -- ============================================================================
 -- Verifica que existe un sistema completo de gestión de riesgos para sistemas
 -- de IA de alto riesgo según el AI Act
--- Ejecutar: psql -U postgres -d sfera -f 37_test_ai_risk_management.sql
+-- Ejecutar: psql -U postgres -d capsule -f 37_test_ai_risk_management.sql
 -- ============================================================================
 
 -- Iniciar transacción para garantizar idempotencia

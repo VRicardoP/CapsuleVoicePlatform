@@ -12,7 +12,7 @@
 -- ============================================================================
 -- Verifica que el sistema implementa Privacy by Design y Privacy by Default
 -- mediante valores restrictivos por defecto y minimización automática
--- Ejecutar: psql -U postgres -d sfera -f 40_test_privacy_by_design.sql
+-- Ejecutar: psql -U postgres -d capsule -f 40_test_privacy_by_design.sql
 -- ============================================================================
 
 BEGIN;

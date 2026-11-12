@@ -1,5 +1,5 @@
 """
-AI Decision Log model - Maps to sferaai.sql ai_decision_logs table.
+AI Decision Log model - Maps to capsulecorp.sql ai_decision_logs table.
 Critical for AI Act compliance (Art. 12 - Traceability).
 
 Every AI decision MUST be logged with full context.

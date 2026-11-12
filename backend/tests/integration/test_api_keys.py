@@ -40,7 +40,7 @@ class TestAPIKeyCreationIntegration:
 
         assert row is not None
         assert row.api_key is not None
-        assert row.api_key.startswith("sfera_ai_agent_")
+        assert row.api_key.startswith("capsule_ai_agent_")
         assert row.api_key_id is not None
         assert row.key_prefix is not None
         assert len(row.key_prefix) == 20
@@ -60,7 +60,7 @@ class TestAPIKeyCreationIntegration:
         row = result.fetchone()
 
         assert row is not None
-        assert row.api_key.startswith("sfera_pbx_")
+        assert row.api_key.startswith("capsule_pbx_")
         assert row.api_key_id is not None
 
     @pytest.mark.asyncio
@@ -78,7 +78,7 @@ class TestAPIKeyCreationIntegration:
         row = result.fetchone()
 
         assert row is not None
-        assert row.api_key.startswith("sfera_external_")
+        assert row.api_key.startswith("capsule_external_")
 
     @pytest.mark.asyncio
     async def test_create_api_key_webhook(self, db_session: AsyncSession):
@@ -95,7 +95,7 @@ class TestAPIKeyCreationIntegration:
         row = result.fetchone()
 
         assert row is not None
-        assert row.api_key.startswith("sfera_webhook_")
+        assert row.api_key.startswith("capsule_webhook_")
 
     @pytest.mark.asyncio
     async def test_create_api_key_with_custom_service_id(self, db_session: AsyncSession):
@@ -248,7 +248,7 @@ class TestAPIKeyValidationIntegration:
         """Test validating an invalid API key."""
         result = await db_session.execute(
             text("SELECT * FROM validate_api_key(:api_key)"),
-            {"api_key": "sfera_ai_agent_invalidkey12345"},
+            {"api_key": "capsule_ai_agent_invalidkey12345"},
         )
         row = result.fetchone()
 

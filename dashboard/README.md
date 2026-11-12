@@ -1,6 +1,6 @@
-# SferaAI Dashboard
+# CapsuleCorp Dashboard
 
-Frontend dashboard para el sistema SferaAI - Gestión de centralita con IA y cumplimiento GDPR.
+Frontend dashboard para el sistema CapsuleCorp - Gestión de centralita con IA y cumplimiento GDPR.
 
 ## Stack Tecnológico
 
@@ -103,7 +103,7 @@ npm run preview
 
 ### Endpoints API Consumidos
 
-#### Autenticación — BFF (cookie opaca `__Host-sferaai_session`)
+#### Autenticación — BFF (cookie opaca `__Host-capsulecorp_session`)
 
 Ver [`docs/BFF_SESSIONS.md`](../docs/BFF_SESSIONS.md) para el modelo completo (CSRF, API tokens, `require_recent_auth`).
 
@@ -207,7 +207,7 @@ El dashboard incluye un tour guiado interactivo para nuevos usuarios, implementa
 ### Características
 
 - **Auto-inicio**: Se activa automáticamente la primera vez que un usuario accede al dashboard
-- **Persistencia**: El estado se guarda en `localStorage` (`sfera_onboarding_completed`)
+- **Persistencia**: El estado se guarda en `localStorage` (`capsule_onboarding_completed`)
 - **Repetible**: Botón "Ayuda" en el sidebar para repetir el tour en cualquier momento
 - **Tema oscuro**: Estilos personalizados que coinciden con el tema del dashboard
 
@@ -235,13 +235,13 @@ El dashboard incluye un tour guiado interactivo para nuevos usuarios, implementa
 | Archivo | Descripción |
 |---------|-------------|
 | `hooks/useOnboarding.ts` | Hook principal con lógica del tour |
-| `index.css` | Estilos personalizados (`.sfera-tour-popover`) |
+| `index.css` | Estilos personalizados (`.capsule-tour-popover`) |
 
 ### Resetear el Tour (Desarrollo)
 
 ```javascript
 // En la consola del navegador
-localStorage.removeItem('sfera_onboarding_completed')
+localStorage.removeItem('capsule_onboarding_completed')
 // Recargar la página para ver el tour
 ```
 
@@ -341,5 +341,5 @@ Dependencias pesadas extraídas a chunks separados para reducir el bundle princi
 
 ---
 
-*SferaAI Dashboard v1.2.0 - Febrero 2026*
+*CapsuleCorp Dashboard v1.2.0 - Febrero 2026*
 *Última actualización: 2026-02-14*

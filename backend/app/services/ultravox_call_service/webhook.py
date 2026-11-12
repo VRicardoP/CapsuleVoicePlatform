@@ -48,7 +48,7 @@ class UltravoxWebhookMixin:
 
     @staticmethod
     def map_disconnection_to_status(end_reason: str | None) -> str:
-        """Map Ultravox end_reason to SferaAI call status.
+        """Map Ultravox end_reason to CapsuleCorp call status.
 
         Valid status values: initiated, ringing, answered, on_hold,
         transferred, completed, abandoned, voicemail, failed
@@ -74,7 +74,7 @@ class UltravoxWebhookMixin:
 
     @staticmethod
     def map_sentiment(sentiment: str | None) -> str | None:
-        """Map Ultravox sentiment to SferaAI format."""
+        """Map Ultravox sentiment to CapsuleCorp format."""
         if not sentiment:
             return None
         sentiment_lower = sentiment.lower()

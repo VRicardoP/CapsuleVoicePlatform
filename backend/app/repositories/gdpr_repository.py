@@ -259,7 +259,7 @@ class BlockedDataRepository(BaseRepository[BlockedData]):
 class SecurityBreachRepository(BaseRepository[SecurityBreach]):
     """
     Repository for security breaches (RGPD Art. 33-34, NIS2 Art. 23).
-    Maps to security_breaches table (sferaai.sql line 6430).
+    Maps to security_breaches table (capsulecorp.sql line 6430).
     """
 
     def __init__(self, session: AsyncSession):

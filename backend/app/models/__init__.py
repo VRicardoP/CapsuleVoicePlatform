@@ -1,6 +1,6 @@
 """
-SQLAlchemy models for SferaAI.
-All models map to tables in sferaai.sql schema.
+SQLAlchemy models for CapsuleCorp.
+All models map to tables in capsulecorp.sql schema.
 
 Compliance coverage:
 - RGPD: Art. 5-7, 15-22, 30, 32-34

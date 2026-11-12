@@ -12,13 +12,13 @@ const DataExportTab: React.FC = () => (
       <div className="space-y-4 text-sm text-gray-300">
         <div>
           <p className="font-semibold text-white mb-1">Responsable del Tratamiento:</p>
-          <p>Sfera AI - Asistente Virtual Inteligente</p>
+          <p>Capsule Corp - Asistente Virtual Inteligente</p>
           <p className="text-gray-500 text-xs">NIF: X0000000X</p>
         </div>
 
         <div>
           <p className="font-semibold text-white mb-1">Delegado de Proteccion de Datos (DPO):</p>
-          <p>dpo@sferaai.example.com</p>
+          <p>dpo@capsulecorp.example.com</p>
         </div>
 
         <div>

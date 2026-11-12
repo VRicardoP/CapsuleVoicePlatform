@@ -16,12 +16,12 @@ NC='\033[0m' # No Color
 
 # Configuración
 DB_USER="${DB_USER:-postgres}"
-DB_NAME="${DB_NAME:-sfera}"
+DB_NAME="${DB_NAME:-capsule}"
 DB_PASS="${DB_PASS:-Pretoriano.}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo -e "${BLUE}============================================================================${NC}"
-echo -e "${BLUE}SferaAI Compliance Suite - Deployment Script${NC}"
+echo -e "${BLUE}CapsuleCorp Compliance Suite - Deployment Script${NC}"
 echo -e "${BLUE}============================================================================${NC}"
 echo ""
 
@@ -63,7 +63,7 @@ echo ""
 
 echo -e "${YELLOW}[2/5] Creando backup de seguridad...${NC}"
 
-BACKUP_FILE="$SCRIPT_DIR/../backups/sfera_backup_$(date +%Y%m%d_%H%M%S).sql"
+BACKUP_FILE="$SCRIPT_DIR/../backups/capsule_backup_$(date +%Y%m%d_%H%M%S).sql"
 mkdir -p "$(dirname "$BACKUP_FILE")"
 
 if [ "$USE_SUDO" = true ]; then

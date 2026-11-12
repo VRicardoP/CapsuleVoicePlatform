@@ -1,4 +1,4 @@
-# Workflows de n8n para SferaAI
+# Workflows de n8n para CapsuleCorp
 
 Este directorio contiene los workflows exportados de n8n en formato JSON para la integracion con Ultravox AI.
 

@@ -12,7 +12,7 @@
 -- REQUISITOS NORMATIVA.MD: PARTE 1 (RGPD) - Art. 17
 -- ============================================================================
 -- Verifica las funciones de derecho al olvido
--- Ejecutar: psql -U postgres -d sfera -f 16_test_gdpr_right_to_erasure.sql
+-- Ejecutar: psql -U postgres -d capsule -f 16_test_gdpr_right_to_erasure.sql
 -- ============================================================================
 
 -- Iniciar transacción para garantizar idempotencia

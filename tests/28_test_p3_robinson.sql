@@ -12,7 +12,7 @@
 -- REQUISITOS NORMATIVA.MD: PARTE 10 (Guías AEPD) - Lista Robinson
 -- ============================================================================
 -- Verifica el cumplimiento de la normativa de Lista Robinson para marketing
--- Ejecutar: psql -U postgres -d sfera -f 28_test_p3_robinson.sql
+-- Ejecutar: psql -U postgres -d capsule -f 28_test_p3_robinson.sql
 -- ============================================================================
 
 -- Iniciar transacción para garantizar idempotencia

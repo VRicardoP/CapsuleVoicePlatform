@@ -19,7 +19,7 @@
 --   - Cálculo automático de plazos (72 horas)
 --   - Determinación de notificación a interesados
 --
--- Ejecutar: psql -U postgres -d sfera -f 10_test_security_breaches.sql
+-- Ejecutar: psql -U postgres -d capsule -f 10_test_security_breaches.sql
 -- ============================================================================
 
 -- Iniciar transacción para garantizar idempotencia

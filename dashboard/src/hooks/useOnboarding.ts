@@ -4,7 +4,7 @@ import { driver, type DriveStep } from 'driver.js';
 import 'driver.js/dist/driver.css';
 import { sidebarSteps, getStepsForRoute } from './tour/tourSteps';
 
-const TOUR_KEY_PREFIX = 'sfera_tour_';
+const TOUR_KEY_PREFIX = 'capsule_tour_';
 
 /** Normalize pathname to a storage key: /outbound/campaigns → outbound_campaigns */
 function routeKey(pathname: string): string {
@@ -75,7 +75,7 @@ export const useOnboarding = () => {
       overlayColor: 'rgba(0, 0, 0, 0.75)',
       stagePadding: 8,
       stageRadius: 8,
-      popoverClass: 'sfera-tour-popover',
+      popoverClass: 'capsule-tour-popover',
       onDestroyStarted: () => {
         markTourSeen(pathname);
         setTourActive(false);

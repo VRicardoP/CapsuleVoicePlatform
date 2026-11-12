@@ -27,9 +27,9 @@ logger = logging.getLogger(__name__)
 
 # Cookie names. ``__Host-`` enforces host-only + Secure + Path=/ but only
 # works over HTTPS, so dev keeps a plain name.
-COOKIE_NAME_PROD = "__Host-sferaai_session"
-COOKIE_NAME_DEV = "sferaai_session"
-CSRF_COOKIE_NAME = "sferaai_csrf"
+COOKIE_NAME_PROD = "__Host-capsulecorp_session"
+COOKIE_NAME_DEV = "capsulecorp_session"
+CSRF_COOKIE_NAME = "capsulecorp_csrf"
 CSRF_HEADER_NAME = "X-CSRF-Token"
 
 # Cookie value entropy in bytes. token_urlsafe rounds up to base64.

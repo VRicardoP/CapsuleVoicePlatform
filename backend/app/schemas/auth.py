@@ -50,7 +50,7 @@ class LoginResponse(BaseModel):
     With BFF (Phase 1), tokens never leave the backend: ``access_token`` and
     ``refresh_token`` are returned empty for backwards-compat with old
     consumers (they will be removed in Phase 1.5). Authentication is
-    transported via the ``__Host-sferaai_session`` cookie set on the
+    transported via the ``__Host-capsulecorp_session`` cookie set on the
     response.
     """
 

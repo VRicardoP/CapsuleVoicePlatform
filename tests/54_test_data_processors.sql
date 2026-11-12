@@ -21,7 +21,7 @@
 -- REQUISITOS NORMATIVA.MD: PARTE 1 (RGPD) - Encargado de Tratamiento (Art. 28-29)
 -- ============================================================================
 -- Verifica el registro y gestión de encargados de tratamiento
--- Ejecutar: psql -U postgres -d sfera -f 54_test_data_processors.sql
+-- Ejecutar: psql -U postgres -d capsule -f 54_test_data_processors.sql
 -- ============================================================================
 
 -- Iniciar transacción para garantizar idempotencia

@@ -1,12 +1,12 @@
 [project]
-name = "sferaai-backend"
+name = "capsulecorp-backend"
 version = "1.0.0"
-description = "API Backend para SferaAI - Call Center con IA y Compliance Legal"
+description = "API Backend para CapsuleCorp - Call Center con IA y Compliance Legal"
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }
 authors = [
-    { name = "SferaAI Team" }
+    { name = "CapsuleCorp Team" }
 ]
 keywords = ["fastapi", "api", "call-center", "ai", "gdpr", "compliance"]
 classifiers = [

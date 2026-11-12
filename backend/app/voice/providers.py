@@ -8,4 +8,4 @@ class VoiceProvider(str, Enum):
 
     ULTRAVOX = "ultravox"
     RETELL = "retell"
-    INTERNAL = "internal"  # Future: SferaAI's own voice agent
+    INTERNAL = "internal"  # Future: CapsuleCorp's own voice agent

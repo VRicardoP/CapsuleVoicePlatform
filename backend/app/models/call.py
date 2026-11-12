@@ -1,5 +1,5 @@
 """
-Call model - Maps to sferaai.sql calls table.
+Call model - Maps to capsulecorp.sql calls table.
 Core entity for call center operations.
 
 Compliance:

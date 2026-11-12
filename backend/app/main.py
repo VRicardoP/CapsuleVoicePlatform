@@ -1,6 +1,6 @@
 """FastAPI application entry point.
 
-SferaAI Backend API - GDPR/LOPDGDD/AI Act Compliant
+CapsuleCorp Backend API - GDPR/LOPDGDD/AI Act Compliant
 
 This API implements secure data handling with:
 - PostgreSQL secure_sessions for authentication (immune to GUC manipulation)
@@ -189,7 +189,7 @@ async def _check_alembic_version() -> None:
 async def lifespan(app: FastAPI):
     """Application lifespan manager."""
     # Startup
-    logger.info("Starting SferaAI API", version=settings.app_version)
+    logger.info("Starting CapsuleCorp API", version=settings.app_version)
     await init_db()
     logger.info("Database connection established")
     await _check_alembic_version()
@@ -245,7 +245,7 @@ async def lifespan(app: FastAPI):
     yield
 
     # Shutdown Redis + SSE listener
-    logger.info("Shutting down SferaAI API")
+    logger.info("Shutting down CapsuleCorp API")
     try:
         from app.services.whatsapp_sse import sse_broadcaster as _sse
 
@@ -262,7 +262,7 @@ app = FastAPI(
     title=settings.app_name,
     version=settings.app_version,
     description="""
-## SferaAI Backend API
+## CapsuleCorp Backend API
 
 API para el sistema de Call Center con IA y compliance legal completo.
 
